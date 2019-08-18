@@ -13,4 +13,7 @@
 
     <color name="collorYellowCab"> #f1c40f </color>
 
+    <color name="colorSkyBlue">#3498db </color>
+    <color name="colorDonker">#1b4f72</color>
+
 </resources>
