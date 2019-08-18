@@ -8,6 +8,15 @@
     android:padding="30dp"
     android:orientation="vertical">
 
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
     <!--Bagian Logo & Nama Aplikasi-->
     <ImageView
         android:id="@+id/imageView2"
@@ -118,6 +127,35 @@
             android:textColor="@color/colorBlack"
             android:textSize="20dp"
             android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/twitter_btn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="10dp"
+                android:src="@drawable/twitter_icon"/>
+
+            <ImageView
+                android:id="@+id/google_btn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="10dp"
+                android:src="@drawable/google_icon"/>
+
+            <ImageView
+                android:id="@+id/fb_btn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="10dp"
+                android:src="@drawable/fb_icon"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
