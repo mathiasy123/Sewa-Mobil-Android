@@ -39,6 +39,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
+    public String status_login="";
     private Button login;
     private ImageView mTwitter, mGoogle, mFacebook;
     private TextView register;
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                status_login = "facebook";
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -198,10 +200,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void signIn_Twitter(){
-
+        status_login = "twitter";
     }
 
     private void signIn_Google(){
+        status_login = "google";
+
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -209,19 +213,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                // Google Sign In failed, update UI appropriately
-                updateUI(null);
-            }
+        switch (status_login){
+            case "google":
+                if (requestCode == RC_SIGN_IN) {
+                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                    if (result.isSuccess()) {
+                        // Google Sign In was successful, authenticate with Firebase
+                        GoogleSignInAccount account = result.getSignInAccount();
+                        firebaseAuthWithGoogle(account);
+                    } else {
+                        // Google Sign In failed, update UI appropriately
+                        updateUI(null);
+                    }
+                }
+
+                break;
+            case "twitter":
+                break;
+            case "facebook":
+                mCallbackManager.onActivityResult(requestCode, resultCode, data);
+                break;
         }
+
     }
 
     private void updateUI(FirebaseUser user) {

@@ -26,6 +26,10 @@ public class MainPageActivity extends AppCompatActivity {
                 //sign out
                 FirebaseAuth.getInstance().signOut();
 
+                //ganti status_login
+                LoginActivity la = new LoginActivity();
+                la.status_login = "";
+
                 //ganti halaman
                 Intent i = new Intent(MainPageActivity.this, LoginActivity.class);
                 startActivity(i);

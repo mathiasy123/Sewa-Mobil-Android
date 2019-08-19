@@ -30,18 +30,9 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="5dp"
-            app:srcCompat="@drawable/test_01"
+            app:srcCompat="@drawable/arphat_logo"
             tools:layout_editor_absoluteX="79dp"
             tools:layout_editor_absoluteY="5dp" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="Arphat"
-            tools:layout_editor_absoluteX="151dp"
-            tools:layout_editor_absoluteY="331dp" />
 
         <!--Bagian Box Form Sign Up-->
         <LinearLayout
