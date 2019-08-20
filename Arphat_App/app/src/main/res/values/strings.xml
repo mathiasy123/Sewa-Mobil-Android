@@ -10,5 +10,13 @@
 
     <string name="username">Android Studio</string>
     <string name="user_email">android.studio@android.com</string>
+    <string name="phone_number">-</string>
+    <string name="address">-</string>
+
+    <string name="office_name">Arphat Travel Agency</string>
+    <string name="office_slogan">Solusi Untuk Setiap Perjalanan Anda</string>
+    <string name="office_address">RT.4/RW.9, Kayu Putih, Kec. Pulo Gadung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13210</string>
+    <string name="office_customerService">(021) 47883900</string>
+    <string name="office_email">arphat_travel@gmail.com</string>
 
 </resources>

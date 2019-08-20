@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainPageActivity"></activity>
+        <activity android:name=".OurOfficeActivity"></activity>
+        <activity android:name=".MainPageActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".GreetingActivity" />
         <activity android:name=".LoginActivity" />
@@ -26,7 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
         <activity android:name="com.twitter.sdk.android.core.identity.OAuthActivity" />
     </application>
 
