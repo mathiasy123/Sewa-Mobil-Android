@@ -4,4 +4,11 @@
 
     <string name="logout">Logout?</string>
     <string name="app_id">2477345922497353</string>
+
+    <string name="twitter_consumer_key">SuuKiXE0T1YlFb44lz5HJhpkT</string>
+    <string name="twitter_consumer_secret">tK4ixOku1eNz387E4eAVTFxX0OQXTFVzMJvwDp4HeYEno1YEJZ</string>
+
+    <string name="username">Android Studio</string>
+    <string name="user_email">android.studio@android.com</string>
+
 </resources>

@@ -3,8 +3,12 @@ package com.path_studio.arphatapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,12 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -35,6 +42,20 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.TwitterAuthProvider;
+
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
+import io.fabric.sdk.android.Fabric;
+
 import com.google.firebase.auth.FacebookAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
@@ -55,12 +76,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int RC_SIGN_IN = 9001;
     public GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
+    private TwitterLoginButton mLoginButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
+
+        // Configure Twitter SDK
+        Twitter.initialize(this);
+
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret)))
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
+
+//        TwitterAuthConfig authConfig = new TwitterAuthConfig(
+//                getString(R.string.twitter_consumer_key),
+//                getString(R.string.twitter_consumer_secret)
+//        );
+//
+//        TwitterConfig.Builder builder=new TwitterConfig.Builder(this);
+//        builder.twitterAuthConfig(authConfig);
+//        Twitter.initialize(builder.build());
+
         setContentView(R.layout.activity_login);
 
         // Configure Google Sign In
@@ -97,6 +139,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             @Override
             public void onError(FacebookException error) {
+                updateUI(null);
+            }
+        });
+
+
+        // initialize_twitter_login
+        mLoginButton = findViewById(R.id.button_twitter_login);
+        mLoginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                status_login = "twitter";
+                handleTwitterSession(result.data);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
                 updateUI(null);
             }
         });
@@ -230,6 +288,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 break;
             case "twitter":
+                // Pass the activity result to the Twitter login button.
+                mLoginButton.onActivityResult(requestCode, resultCode, data);
+
                 break;
             case "facebook":
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -269,6 +330,101 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 //hideProgressDialog();
             }
         });
+    }
+
+    // auth_with_twitter
+    private void handleTwitterSession(TwitterSession session) {
+        //showProgressDialog();
+
+        AuthCredential credential = TwitterAuthProvider.getCredential(
+                session.getAuthToken().token,
+                session.getAuthToken().secret
+        );
+
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+
+                } else {
+
+                }
+                //hideProgressDialog();
+            }
+        });
+    }
+
+    public void Twitter_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mAuth.signOut();
+                //Twitter.logOut();
+                updateUI(null);
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void Google_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Firebase sign out
+                mAuth.signOut();
+                // Google sign out
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                updateUI(null);
+                            }
+                        }
+                );
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void Facebook_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Firebase sign out
+                mAuth.signOut();
+                // Facebook sign out
+                LoginManager.getInstance().logOut();
+                updateUI(null);
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
     }
 
 }
