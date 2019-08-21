@@ -83,7 +83,7 @@ public class GreetingActivity extends AppCompatActivity {
         }
 
         if(mDosts.length>0){
-            mDosts[position].setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+            mDosts[position].setTextColor(ContextCompat.getColor(this, R.color.colorDonker));
         }
 
     }

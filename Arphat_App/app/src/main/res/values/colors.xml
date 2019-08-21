@@ -6,6 +6,7 @@
 
     <!--Tambahan-->
     <color name="colorWhite">#ffffff</color>
+    <color name="colorBookingBg">#F8F8F8</color>
     <color name="colorTransparentWhite">#cccccc</color>
     <color name="colorSolidGrey">#949494</color>
     <color name="colorMenuGray">#5C5C5C</color>
@@ -16,5 +17,10 @@
 
     <color name="colorSkyBlue">#3498db </color>
     <color name="colorDonker">#1b4f72</color>
+    
+    <!--Custom color untuk switch-->
+    <color name="disable_foreground_grey">#42221f1f</color>
+    <color name="disable_thumb_grey">#1c000000</color>
+    <color name="enable_thumb_green">#46bdbf</color>
 
 </resources>

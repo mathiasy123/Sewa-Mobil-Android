@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="680dp"
+    android:background="@color/colorBookingBg"
+    tools:context=".Booking_01_Fragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="177dp"
+            android:src="@drawable/car_vector_test" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="212dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/shadow_box"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="66dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_capacity_skyblue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How Many People?"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <!--Make Like HR in HTML-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="5dp"
+                android:background="@color/colorTransparentWhite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Insert here:"
+                android:textColor="@color/colorSkyBlue"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/form_banyak_penumpang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/nextBtn_booking_01"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="Next"
+                android:textColor="@color/colorBlack" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

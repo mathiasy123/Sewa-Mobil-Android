@@ -19,4 +19,11 @@
     <string name="office_customerService">(021) 47883900</string>
     <string name="office_email">arphat_travel@gmail.com</string>
 
+    <string name="booking_01">Booking Transportation</string>
+    <string name="booking_02">Preview Booking</string>
+
+    <string name="mobil_merk">Merek Mobil</string>
+    <string name="mobil_kapasitas">0-5 orang</string>
+    <string name="mobil_mesin">1500cc</string>
+
 </resources>
