@@ -15,8 +15,15 @@
 
     <color name="collorYellowCab"> #f1c40f </color>
 
+    <color name="colorRed">#ff0000</color>
+    <color name="colorDarkRed">#7b241c</color>
+
     <color name="colorSkyBlue">#3498db </color>
     <color name="colorDonker">#1b4f72</color>
+
+    <color name="colorTransparentGreen">#d5f5e3</color>
+    <color name="colorLightGreen">#52be80</color>
+    <color name="colorGreen">#229954</color>
     
     <!--Custom color untuk switch-->
     <color name="disable_foreground_grey">#42221f1f</color>

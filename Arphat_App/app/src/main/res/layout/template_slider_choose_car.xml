@@ -78,13 +78,21 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="12dp"/>
 
-                <TextView
-                    android:id="@+id/tipe_mobil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mobil_kapasitas"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="12dp"/>
+                <RelativeLayout
+                    android:background="@drawable/car_type_green"
+                    android:layout_height="15dp"
+                    android:layout_width="10dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:text="Small"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12dp"/>
+
+                </RelativeLayout>
 
             </TableRow>
 
@@ -92,7 +100,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:paddingVertical="5dp">
+                android:paddingVertical="5dp"
+                android:layout_marginBottom="53dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -112,14 +121,6 @@
 
         </TableLayout>
 
-        <Button
-            android:id="@+id/pilihan_mobil_btn"
-            android:layout_width="110dp"
-            android:layout_height="33dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:text="Perfect!"
-            android:textSize="10dp" />
 
 
     </LinearLayout>

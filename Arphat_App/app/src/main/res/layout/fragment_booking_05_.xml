@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Booking_05_Fragment"
+    android:background="@color/colorBookingBg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:padding="20dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginVertical="10dp"
+                    android:padding="20dp"
+                    android:background="@drawable/shadow_box">
+
+                    <ImageView
+                        android:layout_width="92dp"
+                        android:layout_height="79dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/arphat_logo" />
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="5dp"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jenis Kendaraan"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:id="@+id/kapasitas_penumpang"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mobil_merk"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="5dp"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jumlah Penumpang"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:id="@+id/jumlah_penumpang"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mobil_kapasitas"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="5dp"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Penggunaan Supir"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:id="@+id/Penggunaan_supir"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Iya"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Lokasi"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorBlack"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pick Up Location:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Destination:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Durasi"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorBlack"/>
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="5dp"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Start"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="tanggal, jam"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="5dp"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="End"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="tanggal, jam"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="12dp"/>
+
+                        </TableRow>
+
+                    </TableLayout>
+
+
+                </LinearLayout>
+
+                <!--Bagian Button-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/back_to_homePage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="20dp"
+                        android:background="@color/colorDarkRed"
+                        android:text="Cancle"
+                        android:textSize="10dp"
+                        android:textColor="@color/colorWhite"/>
+
+                    <Button
+                        android:id="@+id/submit_booking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="20dp"
+                        android:background="@color/colorDonker"
+                        android:text="Booking Now"
+                        android:textSize="10dp"
+                        android:textColor="@color/colorWhite"/>
+
+                </LinearLayout>
+
+                <!--Bagian Box Term Condition dan Privacy Policy, Juga Bagian Direct ke halaman Login-->
+                <LinearLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:padding="20dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/term_privacy_2"
+                        android:textColor="@color/colorDarkGrey"
+                        android:textSize="12dp"
+                        android:gravity="center"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/terms_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Terms of Use"
+                            android:textSize="12dp"
+                            android:textColor="@color/colorDonker"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" and "
+                            android:textSize="12dp"
+                            android:textColor="@color/colorDarkGrey"/>
+
+                        <TextView
+                            android:id="@+id/privacy_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Privacy Policy"
+                            android:textSize="12dp"
+                            android:textColor="@color/colorDonker"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -15,16 +15,25 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/choose_car_slide"
             android:layout_width="match_parent"
-            android:layout_height="436dp">
+            android:layout_height="402dp"
+            android:background="@color/colorWhite">
 
         </androidx.viewpager.widget.ViewPager>
+
+        <Button
+            android:id="@+id/pilihan_mobil_btn"
+            android:layout_width="110dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="-70dp"
+            android:text="Perfect!"
+            android:textSize="10dp" />
 
         <LinearLayout
             android:id="@+id/dotsLayoutPromotion"
             android:layout_width="60dp"
             android:layout_height="43dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="-75dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
@@ -64,6 +73,15 @@
                 android:textSize="12dp" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/prev_booking_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorDarkGrey"
+            android:textSize="12dp"
+            android:padding="10dp"
+            android:text="Prev"/>
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
     private int nCurrentPage;
 
     private Button mNext;
+    private TextView mPrev;
 
     @Nullable
     @Override
@@ -47,9 +50,12 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
 
         mSlideViewPager.addOnPageChangeListener(viewListener);
 
-//        mNext = (Button) view.findViewById(R.id.nextBtn_booking_01);
-//
-//        mNext.setOnClickListener(this);
+        //inisialisasi tombol
+        mNext = (Button) view.findViewById(R.id.pilihan_mobil_btn);
+        mNext.setOnClickListener(this);
+
+        mPrev = (TextView) view.findViewById(R.id.prev_booking_01);
+        mPrev.setOnClickListener(this);
     }
 
     public void addDotsIndicator(int position){
@@ -104,12 +110,18 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         switch (view.getId()) {
-//            case R.id.nextBtn_booking_01:
-//                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.fragment_container_booking, new Booking_02_Fragment(), "Halaman Ke 2 Booking");
-//                ft.commit();
-//                break;
+            case R.id.prev_booking_01:
+                ft.replace(R.id.fragment_container_booking, new Booking_01_Fragment(), "Back to First Page Booking");
+                ft.commit();
+                break;
+            case R.id.pilihan_mobil_btn:
+                ft.replace(R.id.fragment_container_booking, new Booking_03_Fragment(), "Halaman Ke 3 Booking");
+                ft.commit();
+                break;
         }
+
     }
 }
