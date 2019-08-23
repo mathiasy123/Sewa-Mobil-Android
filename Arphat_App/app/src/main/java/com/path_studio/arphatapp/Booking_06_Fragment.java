@@ -33,7 +33,7 @@ public class Booking_06_Fragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_to_homePage:
-                Intent i = new Intent(getActivity(), MainPageActivity.class);
+                Intent i = new Intent(getActivity(), HalamanUtamaActivity.class);
                 startActivity(i);
                 break;
         }

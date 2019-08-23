@@ -53,7 +53,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
-                                Intent i = new Intent(BookingActivity.this, MainPageActivity.class);
+                                Intent i = new Intent(BookingActivity.this, HalamanUtamaActivity.class);
                                 startActivity(i);
                                 finish();
                                 break;

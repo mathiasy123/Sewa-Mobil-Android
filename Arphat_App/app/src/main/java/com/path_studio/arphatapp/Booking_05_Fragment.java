@@ -41,7 +41,7 @@ public class Booking_05_Fragment extends Fragment implements View.OnClickListene
                 ft.commit();
                 break;
             case R.id.back_to_homePage:
-                Intent i = new Intent(getActivity(), MainPageActivity.class);
+                Intent i = new Intent(getActivity(), HalamanUtamaActivity.class);
                 startActivity(i);
                 break;
         }

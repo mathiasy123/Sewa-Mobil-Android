@@ -34,4 +34,10 @@
 
     <string name="permissions_text">Places Project needs permission to acces device location to provide required services. Please allow the permission</string>
 
+    <string name="tab_1">Home</string>
+    <string name="tab_2">History</string>
+    <string name="tab_3">Payment</string>
+    <string name="tab_4">Inbox</string>
+    <string name="tab_5">Account</string>
+
 </resources>

@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user != null){
-                    Intent i = new Intent(LoginActivity.this, MainPageActivity.class);
+                    Intent i = new Intent(LoginActivity.this, HalamanUtamaActivity.class);
                     startActivity(i);
                     finish();
                     return;
@@ -302,7 +302,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(this, MainPageActivity.class);
+            Intent intent = new Intent(this, HalamanUtamaActivity.class);
             startActivity(intent);
         }
 

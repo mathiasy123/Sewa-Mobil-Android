@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HalamanUtamaActivity"
+    android:orientation="vertical"
+    android:background="@drawable/bg_01_400x700">
+
+    <!--Bagian Fragment-->
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="504dp">
+    </FrameLayout>
+
+    <!--Menu Bar-->
+    <com.iammert.library.readablebottombar.ReadableBottomBar
+        android:id="@+id/bottomBar"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        app:rbb_tabs="@xml/tabs"/>
+
+</LinearLayout>

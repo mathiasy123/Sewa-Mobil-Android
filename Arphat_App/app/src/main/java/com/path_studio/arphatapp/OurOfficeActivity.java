@@ -32,7 +32,7 @@ public class OurOfficeActivity extends AppCompatActivity implements View.OnClick
 
         switch (view.getId()) {
             case R.id.backButton:
-                Intent i = new Intent(OurOfficeActivity.this, MainPageActivity.class);
+                Intent i = new Intent(OurOfficeActivity.this, HalamanUtamaActivity.class);
                 startActivity(i);
                 finish();
                 break;

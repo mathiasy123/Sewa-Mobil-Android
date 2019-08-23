@@ -50,12 +50,13 @@
     <Button
         android:id="@+id/btn_find"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:text="Find Restaurants"
         android:textColor="@color/colorWhite"
         android:background="@color/colorDonker"
-        android:layout_margin="16dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="16dp"
         android:textStyle="bold"/>
 
 </RelativeLayout>

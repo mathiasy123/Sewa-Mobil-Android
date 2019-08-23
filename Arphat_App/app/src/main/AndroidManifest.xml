@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationResultActivity"></activity>
+        <activity android:name=".HalamanUtamaActivity"></activity>
+        <activity android:name=".LocationResultActivity" />
         <activity android:name=".PermissionActivity" />
 
         <meta-data
@@ -29,7 +30,6 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".BookingActivity" />
         <activity android:name=".OurOfficeActivity" />
-        <activity android:name=".MainPageActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".GreetingActivity" />
         <activity android:name=".LoginActivity" />

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        drawable="@drawable/ic_home_gray"
+        text="@string/tab_1" />
+
+    <tab
+        drawable="@drawable/ic_history_gray"
+        text="@string/tab_2" />
+
+    <tab
+        drawable="@drawable/ic_payment_gary"
+        text="@string/tab_3" />
+
+    <tab
+        drawable="@drawable/ic_inbox_gray"
+        text="@string/tab_4" />
+
+    <tab
+        drawable="@drawable/ic_account_circle_gray"
+        text="@string/tab_5" />
+</tabs>
