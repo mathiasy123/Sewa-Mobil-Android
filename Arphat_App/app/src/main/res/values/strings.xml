@@ -28,8 +28,10 @@
     <string name="mobil_kapasitas">0-5 orang</string>
     <string name="mobil_mesin">1500cc</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="term_privacy_2">By click booking button, you agree to our</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_maps_key">AIzaSyDtOS2mopjfCbk3bPfk3zlTbGkx3C9qGKA</string>
+
+    <string name="permissions_text">Places Project needs permission to acces device location to provide required services. Please allow the permission</string>
 
 </resources>

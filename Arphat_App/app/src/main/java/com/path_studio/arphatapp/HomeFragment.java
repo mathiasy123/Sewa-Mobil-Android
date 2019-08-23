@@ -50,6 +50,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         m1 = (ImageButton) view.findViewById(R.id.btn_booking);
         m1.setOnClickListener(this);
 
+        m2 = (ImageButton) view.findViewById(R.id.btn_location);
+        m2.setOnClickListener(this);
+
         m3 = (ImageButton) view.findViewById(R.id.btn_office_menu);
         m3.setOnClickListener(this);
 
@@ -102,9 +105,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 Intent i = new Intent(getActivity(), OurOfficeActivity.class);
                 startActivity(i);
                 break;
-            case R.id.btn_booking:
-                Intent i_1 = new Intent(getActivity(), BookingActivity.class);
+            case R.id.btn_location:
+                Intent i_1 = new Intent(getActivity(), MapsActivity.class);
                 startActivity(i_1);
+                break;
+            case R.id.btn_booking:
+                Intent i_2 = new Intent(getActivity(), BookingActivity.class);
+                startActivity(i_2);
                 break;
         }
     }

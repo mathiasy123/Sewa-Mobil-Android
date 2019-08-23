@@ -36,7 +36,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shadow_box"
                 android:orientation="horizontal">
 
@@ -75,6 +75,7 @@
                     android:padding="10dp">
 
                     <ImageButton
+                        android:id="@+id/btn_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -119,7 +120,7 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/promotionSlider"
                 android:layout_width="match_parent"
-                android:layout_marginVertical="30dp"
+                android:layout_marginVertical="20dp"
                 android:layout_height="150dp">
 
             </androidx.viewpager.widget.ViewPager>

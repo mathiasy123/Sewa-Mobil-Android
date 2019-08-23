@@ -20,7 +20,7 @@ public class OpeningActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(OpeningActivity.this, GreetingActivity.class);
+                Intent i = new Intent(OpeningActivity.this, PermissionActivity.class);
                 startActivity(i);
                 finish();
             }
