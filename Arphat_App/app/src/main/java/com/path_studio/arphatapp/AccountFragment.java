@@ -1,5 +1,7 @@
 package com.path_studio.arphatapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,25 +12,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import java.io.InputStream;
 import java.net.URL;
 
-public class AccountFragment extends Fragment implements View.OnClickListener {
+public class AccountFragment extends Fragment implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private FirebaseAuth mAuth;
+    public GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private TextView mprofileName, mprofileEmail, mDisplayUsername, mDisplayEmail, mDisplayPhone, mDisplayAddress;
@@ -39,6 +47,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
@@ -67,9 +76,26 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                updateUI(user);
+                if(user != null){
+                    updateUI(user);
+                }else{
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(i);
+                    return;
+                }
             }
         };
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity(), this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
     }
 
@@ -106,6 +132,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(getActivity(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... urls) {
@@ -137,32 +168,99 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
     public void logout(){
-        LoginActivity la = new LoginActivity();
 
         //sign out
-        FirebaseAuth.getInstance().signOut();
-        switch (la.status_login){
-            case "google":
-                la.Google_signOut();
-                break;
 
-            case "facebook":
-                // Facebook sign out
-                la.Facebook_signOut();
-                break;
-
-            case "twitter":
-                la.Twitter_signOut();
-                break;
+        for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+            if (user.getProviderId().equals("facebook.com")) {
+                Facebook_signOut();
+            }else if(user.getProviderId().equals("google.com")){
+                Google_signOut();
+            }else if(user.getProviderId().equals("twitter.com")){
+                Twitter_signOut();
+            }else{
+                Email_signout();
+            }
         }
 
-        //ganti status_login
-        la.status_login = "";
+    }
 
-        //ganti halaman
-        Intent i = new Intent(getActivity(), LoginActivity.class);
-        startActivity(i);
-        return;
+    public void Twitter_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseAuth.getInstance().signOut();
+                //Twitter.logOut();
+                updateUI(null);
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void Google_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Firebase sign out
+                FirebaseAuth.getInstance().signOut();
+                // Google sign out
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                updateUI(null);
+                            }
+                        }
+                );
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void Facebook_signOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Firebase sign out
+                FirebaseAuth.getInstance().signOut();
+                // Facebook sign out
+                LoginManager.getInstance().logOut();
+                updateUI(null);
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void Email_signout(){
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
     }
 
 }

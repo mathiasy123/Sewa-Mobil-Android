@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,16 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -55,8 +59,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import io.fabric.sdk.android.Fabric;
-
 import com.google.firebase.auth.FacebookAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
@@ -72,13 +74,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private DatabaseReference mDatabase;
 
-    private View mProgressView;
-
     private static final int RC_SIGN_IN = 9001;
     public GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
     private TwitterLoginButton mLoginButton;
 
+    private static LoginActivity app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +96,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         Twitter.initialize(config);
 
-//        TwitterAuthConfig authConfig = new TwitterAuthConfig(
-//                getString(R.string.twitter_consumer_key),
-//                getString(R.string.twitter_consumer_secret)
-//        );
-//
-//        TwitterConfig.Builder builder=new TwitterConfig.Builder(this);
-//        builder.twitterAuthConfig(authConfig);
-//        Twitter.initialize(builder.build());
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                getString(R.string.twitter_consumer_key),
+                getString(R.string.twitter_consumer_secret)
+        );
+
+        TwitterConfig.Builder builder=new TwitterConfig.Builder(this);
+        builder.twitterAuthConfig(authConfig);
+        Twitter.initialize(builder.build());
 
         setContentView(R.layout.activity_login);
 
@@ -192,14 +193,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         login = (Button) findViewById(R.id.signin_btn);
 
-        mProgressView = findViewById(R.id.login_progress);
-
 
         register.setOnClickListener(this);
         login.setOnClickListener(this);
         mFacebook.setOnClickListener(this);
         mTwitter.setOnClickListener(this);
         mGoogle.setOnClickListener(this);
+
+        app = this;
 
     }
 
@@ -281,6 +282,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         // Google Sign In was successful, authenticate with Firebase
                         GoogleSignInAccount account = result.getSignInAccount();
                         firebaseAuthWithGoogle(account);
+                        status_login = "google";
                     } else {
                         // Google Sign In failed, update UI appropriately
                         updateUI(null);
@@ -309,33 +311,42 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        //showProgressDialog();
+        showProgressDialog();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                //hideProgressDialog();
+                hideProgressDialog();
             }
         });
     }
 
     // auth_with_facebook
     private void handleFacebookAccessToken(AccessToken token) {
-        //showProgressDialog();
+        showProgressDialog();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                //hideProgressDialog();
+                Log.d("Facebook Login", "signInWithCredential:onComplete:" + task.isSuccessful());
+                if (!task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
+                } else {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user);
+                }
+                hideProgressDialog();
             }
         });
     }
 
     // auth_with_twitter
     private void handleTwitterSession(TwitterSession session) {
-        //showProgressDialog();
+        showProgressDialog();
 
         AuthCredential credential = TwitterAuthProvider.getCredential(
                 session.getAuthToken().token,
@@ -350,82 +361,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
 
                 }
-                //hideProgressDialog();
+                hideProgressDialog();
             }
         });
     }
 
-    public void Twitter_signOut() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.logout);
-        alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mAuth.signOut();
-                //Twitter.logOut();
-                updateUI(null);
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
+    private ProgressDialog mProgressDialog;
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
     }
 
-    public void Google_signOut() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.logout);
-        alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // Firebase sign out
-                mAuth.signOut();
-                // Google sign out
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(@NonNull Status status) {
-                                updateUI(null);
-                            }
-                        }
-                );
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
-    }
-
-    public void Facebook_signOut() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.logout);
-        alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // Firebase sign out
-                mAuth.signOut();
-                // Facebook sign out
-                LoginManager.getInstance().logOut();
-                updateUI(null);
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
 }
