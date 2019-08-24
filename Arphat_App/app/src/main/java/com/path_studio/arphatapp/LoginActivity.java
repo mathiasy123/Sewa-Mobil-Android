@@ -3,33 +3,25 @@ package com.path_studio.arphatapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -50,7 +42,6 @@ import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.TwitterAuthProvider;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -88,13 +79,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Configure Twitter SDK
         Twitter.initialize(this);
-
-        TwitterConfig config = new TwitterConfig.Builder(this)
-                .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret)))
-                .debug(true)
-                .build();
-        Twitter.initialize(config);
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(
                 getString(R.string.twitter_consumer_key),
@@ -249,14 +233,27 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         final String email = mEmail.getText().toString();
         final String password = mPassword.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this, "Sign in Error", Toast.LENGTH_SHORT).show();
+        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, "Sign in Error", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }else if(TextUtils.isEmpty(email) && TextUtils.isEmpty(password)){
+            //give toast kalo email atau passwordnya kosong
+            Toast.makeText(LoginActivity.this, "Email and Password Empty", Toast.LENGTH_SHORT).show();
+
+        }else if(!TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+            //give toast kalo passwordnya kosong
+            Toast.makeText(LoginActivity.this, "Password Empty", Toast.LENGTH_SHORT).show();
+
+        }else if(TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+            //give toast kalo Email kosong
+            Toast.makeText(LoginActivity.this, "Email Empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void signIn_Twitter(){
@@ -346,6 +343,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     // auth_with_twitter
     private void handleTwitterSession(TwitterSession session) {
+        Log.d("Twitter Login", "handleTwitterSession:" + session);
         showProgressDialog();
 
         AuthCredential credential = TwitterAuthProvider.getCredential(
@@ -356,10 +354,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d("Twitter Login", "signInWithCredential:onComplete:" + task.isSuccessful());
                 if (!task.isSuccessful()) {
-
+                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
                 } else {
-
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user);
                 }
                 hideProgressDialog();
             }

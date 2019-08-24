@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,21 +74,30 @@ public class SignUpActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String username = mUsername.getText().toString();
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "Sign up Error", Toast.LENGTH_SHORT).show();
-                        }else{
-                            String user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(user_id);
-                            current_user_db.setValue(true);
+                //check apakah semua sudah terisi
+                if(TextUtils.isEmpty(email) && TextUtils.isEmpty(password) && TextUtils.isEmpty(username)){
+                    Toast.makeText(SignUpActivity.this, "Please Fill All Form before Submit", Toast.LENGTH_SHORT).show();
+                }else if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)){
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()){
+                                Toast.makeText(SignUpActivity.this, "Sign up Error", Toast.LENGTH_SHORT).show();
+                            }else{
+                                String user_id = mAuth.getCurrentUser().getUid();
+                                DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(user_id);
+                                current_user_db.setValue(true);
+                            }
                         }
-                    }
-                });
+                    });
+                }else if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username)){
+                    Toast.makeText(SignUpActivity.this, "Username, Email, or Password is Still Empty", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.path_studio.arphatapp.R;
+
 public class slider_adapter_choose_car extends PagerAdapter {
     Context context;
     LayoutInflater layoutInflater;

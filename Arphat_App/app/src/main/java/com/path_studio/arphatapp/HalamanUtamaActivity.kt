@@ -13,7 +13,7 @@ class HalamanUtamaActivity : AppCompatActivity() {
 
         //set fragment jadi home
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container,  HomeFragment()).commit()
+        transaction.replace(R.id.fragment_container, HomeFragment()).commit()
 
         bottomBar.setOnItemSelectListener( object : ReadableBottomBar.ItemSelectListener{
             override fun onItemSelected(index: Int) {
@@ -21,7 +21,7 @@ class HalamanUtamaActivity : AppCompatActivity() {
                     0->{
                         //untuk home
                         val transaction1 = supportFragmentManager.beginTransaction()
-                        transaction1.replace(R.id.fragment_container,  HomeFragment()).commit()
+                        transaction1.replace(R.id.fragment_container, HomeFragment()).commit()
                     }
 
                     1->{
@@ -38,7 +38,7 @@ class HalamanUtamaActivity : AppCompatActivity() {
                     4->{
                         //untuk account
                         val transaction2 = supportFragmentManager.beginTransaction()
-                        transaction2.replace(R.id.fragment_container,  AccountFragment()).commit()
+                        transaction2.replace(R.id.fragment_container, AccountFragment()).commit()
                     }
                 }
             }

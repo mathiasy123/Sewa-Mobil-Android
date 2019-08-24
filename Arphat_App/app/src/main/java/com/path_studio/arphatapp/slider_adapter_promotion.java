@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.path_studio.arphatapp.R;
+
 public class slider_adapter_promotion extends PagerAdapter {
     Context context;
     LayoutInflater layoutInflater;

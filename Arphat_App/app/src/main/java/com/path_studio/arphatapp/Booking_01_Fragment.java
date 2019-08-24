@@ -1,7 +1,5 @@
 package com.path_studio.arphatapp;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
