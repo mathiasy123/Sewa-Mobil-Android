@@ -234,7 +234,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void run() {
                         rippleBg.stopRippleAnimation();
-                        startActivity(new Intent(MapsActivity.this, LocationResult.class));
+                        startActivity(new Intent(MapsActivity.this, LocationResultActivity.class));
                         finish();
                     }
                 }, 3000);

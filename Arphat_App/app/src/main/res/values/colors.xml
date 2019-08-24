@@ -20,6 +20,7 @@
 
     <color name="colorSkyBlue">#3498db </color>
     <color name="colorDonker">#1b4f72</color>
+    <color name="colorDarkBlue">#0E1931</color>
 
     <color name="colorTransparentGreen">#d5f5e3</color>
     <color name="colorLightGreen">#52be80</color>

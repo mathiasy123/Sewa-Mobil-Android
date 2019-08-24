@@ -6,22 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".OpeningActivity"
     android:orientation="vertical"
-    android:id="@+id/openingScreen">
+    android:id="@+id/openingScreen"
+    android:background="@color/colorDarkBlue">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="100dp"
-        app:srcCompat="@drawable/arphat_logo" />
+        android:layout_gravity="center"
+        android:padding="30dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/round_btn">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            app:srcCompat="@drawable/arphat_logo" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
         android:gravity="center"
-        android:textSize="30dp"
-        android:text="Version 1.0" />
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Version 1.0.0" />
 
 </LinearLayout>
