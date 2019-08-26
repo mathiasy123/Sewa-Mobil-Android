@@ -29,8 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.check_internet_connection;
 
-import java.util.concurrent.Executor;
-
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button register;

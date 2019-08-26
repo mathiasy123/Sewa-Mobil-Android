@@ -1,5 +1,7 @@
 package com.path_studio.arphatapp.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,11 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.slider_adapter_choose_car;
 
-public class Booking_02_Fragment extends Fragment implements View.OnClickListener{
+public class Booking_02_Fragment extends Fragment implements View.OnClickListener {
 
     private slider_adapter_choose_car sliderAdapterChooseCar;
     private ViewPager mSlideViewPager;
@@ -120,10 +123,24 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
                 ft.commit();
                 break;
             case R.id.pilihan_mobil_btn:
-                ft.replace(R.id.fragment_container_booking, new Booking_03_Fragment(), "Halaman Ke 3 Booking");
-                ft.commit();
+                //check apakah form sudah terisi
+                if(nCurrentPage>(-1) && nCurrentPage<9){
+                    //dapetin jenis mobilnya
+                    SharedPreferences mSettings = getActivity().getSharedPreferences("Booking_data", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("jenis_mobil", nCurrentPage);
+                    editor.apply();
+
+                    //pindah ke halaman selanjutnya
+                    ft.replace(R.id.fragment_container_booking, new Booking_03_Fragment(), "Halaman Ke 3 Booking");
+                    ft.commit();
+                }else{
+                    Toast.makeText(getActivity(), "Pilihan tidak terdaftar", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
 
     }
+
 }

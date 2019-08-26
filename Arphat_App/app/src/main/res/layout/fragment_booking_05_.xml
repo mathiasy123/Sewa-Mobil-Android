@@ -38,6 +38,14 @@
                         android:layout_margin="20dp"
                         android:src="@drawable/arphat_logo" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Detail Booking"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorBlack"/>
+
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -57,7 +65,7 @@
                                 android:textSize="12dp"/>
 
                             <TextView
-                                android:id="@+id/kapasitas_penumpang"
+                                android:id="@+id/merk_mobil"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/mobil_merk"
@@ -130,10 +138,24 @@
                         android:textSize="12dp"/>
 
                     <TextView
+                        android:id="@+id/pickup_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorDarkGrey"
+                        android:textSize="12dp"/>
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Destination:"
                         android:textColor="@color/colorBlack"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:id="@+id/destination_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorDarkGrey"
                         android:textSize="12dp"/>
 
                     <TextView
@@ -163,6 +185,7 @@
                                 android:textSize="12dp"/>
 
                             <TextView
+                                android:id="@+id/start_travel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="tanggal, jam"
@@ -185,6 +208,7 @@
                                 android:textSize="12dp"/>
 
                             <TextView
+                                android:id="@+id/end_travel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="tanggal, jam"

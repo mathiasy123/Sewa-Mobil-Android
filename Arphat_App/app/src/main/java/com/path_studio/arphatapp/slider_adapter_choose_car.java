@@ -1,20 +1,23 @@
 package com.path_studio.arphatapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.path_studio.arphatapp.R;
-
-public class slider_adapter_choose_car extends PagerAdapter {
+public class slider_adapter_choose_car extends PagerAdapter implements CompoundButton.OnCheckedChangeListener{
     Context context;
     LayoutInflater layoutInflater;
+
+    private Switch use_driver;
 
     public int [] mobil = {
             R.drawable.mobil_alya,
@@ -49,6 +52,9 @@ public class slider_adapter_choose_car extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.template_slider_choose_car, container, false);
 
+        use_driver = (Switch) view.findViewById(R.id.include_driver);
+        use_driver.setOnCheckedChangeListener(this);
+
         //set gambar dan tulisan sesuai dengan database
         ImageView slideImageView    = (ImageView) view.findViewById(R.id.gambar_mobil);
         slideImageView.setImageResource(mobil[position]);
@@ -64,4 +70,17 @@ public class slider_adapter_choose_car extends PagerAdapter {
         container.removeView((LinearLayout)object);
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        SharedPreferences mSettings = context.getSharedPreferences("Booking_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSettings.edit();
+        if(isChecked){
+            //switch is on
+            editor.putBoolean("iclude_driver", true);
+        }else{
+            //switch is off
+            editor.putBoolean("iclude_driver", false);
+        }
+        editor.apply();
+    }
 }

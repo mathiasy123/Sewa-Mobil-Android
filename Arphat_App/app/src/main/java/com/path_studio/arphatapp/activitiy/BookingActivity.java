@@ -15,16 +15,6 @@ import com.path_studio.arphatapp.fragment.Booking_01_Fragment;
 
 public class BookingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String kapasitas = "";
-    private String pickup_location = "";
-    private String destination_location = "";
-    private String take_off_date = "";
-    private String take_off_time = "";
-    private String return_date = "";
-    private String return_time = "";
-    private int banyak_penumpang = 0;
-    private boolean use_driver = true;
-
     private ImageView mBack;
 
     @Override
