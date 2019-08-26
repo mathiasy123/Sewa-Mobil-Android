@@ -87,6 +87,9 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     testImplementation 'junit:junit:4.12'
 
+    //im not robot recaptcha
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+
 }
 
 repositories {
@@ -97,3 +100,5 @@ repositories {
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.android.application'
+
