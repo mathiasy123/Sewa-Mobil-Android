@@ -20,12 +20,40 @@
 
         </androidx.viewpager.widget.ViewPager>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="-110dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="10dp"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_driver_skyblue" />
+
+            <Switch
+                android:id="@+id/include_driver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentRight="true"
+                android:checked="false"
+                android:text="Include Driver"
+                android:textSize="12dp"
+                android:theme="@style/SCBSwitch" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/pilihan_mobil_btn"
             android:layout_width="110dp"
             android:layout_height="33dp"
             android:layout_gravity="center"
-            android:layout_marginTop="-70dp"
+            android:layout_marginTop="-10dp"
             android:text="Perfect!"
             android:textSize="10dp" />
 

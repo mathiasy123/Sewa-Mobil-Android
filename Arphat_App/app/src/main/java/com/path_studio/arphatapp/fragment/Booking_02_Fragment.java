@@ -15,14 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.slider_adapter_choose_car;
 
-public class Booking_02_Fragment extends Fragment implements View.OnClickListener {
+public class Booking_02_Fragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private slider_adapter_choose_car sliderAdapterChooseCar;
     private ViewPager mSlideViewPager;
@@ -34,6 +36,8 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
     private Button mNext;
     private TextView mPrev;
 
+    private Switch use_driver;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,6 +47,9 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        use_driver = (Switch) view.findViewById(R.id.include_driver);
+        use_driver.setOnCheckedChangeListener(this);
 
         //keperluan pilih mobil
         mSlideViewPager = (ViewPager) view.findViewById(R.id.choose_car_slide);
@@ -143,4 +150,17 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
 
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        SharedPreferences mSettings = getActivity().getSharedPreferences("Booking_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSettings.edit();
+        if(isChecked){
+            //switch is on
+            editor.putBoolean("iclude_driver", true);
+        }else{
+            //switch is off
+            editor.putBoolean("iclude_driver", false);
+        }
+        editor.apply();
+    }
 }

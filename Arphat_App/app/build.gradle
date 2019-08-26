@@ -29,6 +29,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -87,8 +91,11 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     testImplementation 'junit:junit:4.12'
 
-    //im not robot recaptcha
+    //recaptcha
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+
+    //datetime picker in style
+    implementation 'com.github.florent37:SingleDateAndTimePicker:v2.0.4'
 
 }
 

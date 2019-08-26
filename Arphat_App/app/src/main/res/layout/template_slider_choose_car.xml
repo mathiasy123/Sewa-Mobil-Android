@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingVertical="5dp"
+                android:layout_marginBottom="88dp"
                 android:layout_gravity="center_vertical">
 
                 <ImageView
@@ -79,12 +80,14 @@
                     android:textSize="12dp"/>
 
                 <RelativeLayout
+                    android:id="@+id/car_capasity"
                     android:background="@drawable/car_type_green"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_width="10dp"
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/text_capasity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="5dp"
@@ -93,30 +96,6 @@
                         android:textSize="12dp"/>
 
                 </RelativeLayout>
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingVertical="5dp"
-                android:layout_marginBottom="53dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_driver_skyblue" />
-
-                <Switch
-                    android:id="@+id/include_driver"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:checked="false"
-                    android:text="Include Driver"
-                    android:textSize="12dp"
-                    android:theme="@style/SCBSwitch" />
 
             </TableRow>
 

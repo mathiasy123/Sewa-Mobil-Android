@@ -1,6 +1,8 @@
 package com.path_studio.arphatapp.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -102,8 +104,23 @@ public class Booking_05_Fragment extends Fragment implements View.OnClickListene
                         });
                 break;
             case R.id.back_to_homePage:
-                Intent i = new Intent(getActivity(), HalamanUtamaActivity.class);
-                startActivity(i);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setMessage(R.string.booking_cancle_validation);
+                alert.setCancelable(false);
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent i1 = new Intent(getActivity(), HalamanUtamaActivity.class);
+                        startActivity(i1);
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
                 break;
         }
     }

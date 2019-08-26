@@ -9,13 +9,19 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.path_studio.arphatapp.R;
+
+import java.util.Date;
 
 public class Booking_04_Fragment extends Fragment implements View.OnClickListener{
 
     private TextView mPrev, mNext;
+    private Button mSet1, mSet2;
 
     @Nullable
     @Override
@@ -31,6 +37,13 @@ public class Booking_04_Fragment extends Fragment implements View.OnClickListene
 
         mPrev = (TextView) view.findViewById(R.id.prev_booking_03);
         mPrev.setOnClickListener(this);
+
+        mSet1 = view.findViewById(R.id.set_takeoff_datetime);
+        mSet1.setOnClickListener(this);
+
+        mSet2 = view.findViewById(R.id.set_Return_datetime);
+        mSet2.setOnClickListener(this);
+
     }
 
     @Override
@@ -44,6 +57,54 @@ public class Booking_04_Fragment extends Fragment implements View.OnClickListene
             case R.id.prev_booking_03:
                 ft.replace(R.id.fragment_container_booking, new Booking_03_Fragment(), "Back to Page 3 Booking");
                 ft.commit();
+                break;
+            case R.id.set_takeoff_datetime:
+                //calendar dan time picker
+                new SingleDateAndTimePickerDialog.Builder(getActivity())
+                        //.bottomSheet()
+                        //.curved()
+                        //.minutesStep(15)
+                        //.displayHours(false)
+                        //.displayMinutes(false)
+                        //.todayText("aujourd'hui")
+                        .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
+                            @Override
+                            public void onDisplayed(SingleDateAndTimePicker picker) {
+                                //retrieve the SingleDateAndTimePicker
+                            }
+                        })
+
+                        .title("Take Off Date & Time")
+                        .listener(new SingleDateAndTimePickerDialog.Listener() {
+                            @Override
+                            public void onDateSelected(Date date) {
+
+                            }
+                        }).display();
+                break;
+            case R.id.set_Return_datetime:
+                //calendar dan time picker
+                new SingleDateAndTimePickerDialog.Builder(getActivity())
+                        //.bottomSheet()
+                        //.curved()
+                        //.minutesStep(15)
+                        //.displayHours(false)
+                        //.displayMinutes(false)
+                        //.todayText("aujourd'hui")
+                        .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
+                            @Override
+                            public void onDisplayed(SingleDateAndTimePicker picker) {
+                                //retrieve the SingleDateAndTimePicker
+                            }
+                        })
+
+                        .title("Return Date & Time")
+                        .listener(new SingleDateAndTimePickerDialog.Listener() {
+                            @Override
+                            public void onDateSelected(Date date) {
+
+                            }
+                        }).display();
                 break;
         }
     }

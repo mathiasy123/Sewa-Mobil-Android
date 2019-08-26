@@ -24,6 +24,7 @@
 
     <string name="booking_01">Booking Transportation</string>
     <string name="booking_02">Preview Booking</string>
+    <string name="booking_cancle_validation">Are you sure you want to Cancle this Booking?</string>
 
     <string name="notes_booking_transaction">Maksimal konfirmasi penyewaan 30 menit dari sekarang. dari sekarang. Hubungi kami jika belum mendapatkan kabar lebih dari 30 menit.</string>
 
