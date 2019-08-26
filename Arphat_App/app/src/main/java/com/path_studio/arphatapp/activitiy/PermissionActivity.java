@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -21,6 +21,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.path_studio.arphatapp.R;
 
 public class PermissionActivity extends AppCompatActivity {
 

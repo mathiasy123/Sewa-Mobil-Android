@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.check_internet_connection;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -35,6 +37,17 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        //check Internet Connection
+        check_internet_connection cic = new check_internet_connection();
+        if(cic.check_internet(getApplicationContext()) == false){
+            //direct ke halaman Disconnect
+            Intent i = new Intent(SignUpActivity.this, DisconnectActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        //------------------------------------------------------------------------------------------
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -89,8 +102,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 Toast.makeText(SignUpActivity.this, "Sign up Error", Toast.LENGTH_SHORT).show();
                             }else{
                                 String user_id = mAuth.getCurrentUser().getUid();
+
                                 DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(user_id);
-                                current_user_db.setValue(true);
+                                current_user_db.child("Username").setValue(username);
+                                current_user_db.child("Email").setValue(email);
+                                current_user_db.child("Password").setValue(password);
+                                current_user_db.child("SignUp Method").setValue("Email&Password");
                             }
                         }
                     });

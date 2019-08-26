@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.path_studio.arphatapp.R;
-
 public class slider_adapter extends PagerAdapter {
     Context context;
     LayoutInflater layoutInflater;
@@ -22,15 +20,15 @@ public class slider_adapter extends PagerAdapter {
 
     //Arrays
     public int [] bg_image = {
-            R.drawable.test_02,
-            R.drawable.test_03,
-            R.drawable.test_04
+            R.drawable.welcome,
+            R.drawable.customer_service,
+            R.drawable.ready
     };
 
     public String [] slide_headings = {
             "User",
             "Driver",
-            "Ready"
+            "ready"
     };
 
     public String [] slide_descs = {

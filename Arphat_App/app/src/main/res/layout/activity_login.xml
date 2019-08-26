@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginActivity"
+    tools:context=".activitiy.LoginActivity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none"
@@ -157,13 +157,15 @@
                 android:id="@+id/login_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"/>
+                android:layout_marginVertical="20dp"
+                android:visibility="gone"/>
 
             <com.twitter.sdk.android.core.identity.TwitterLoginButton
                 android:id="@+id/button_twitter_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

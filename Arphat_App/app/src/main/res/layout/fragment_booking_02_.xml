@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="680dp"
-    tools:context=".Booking_02_Fragment">
+    tools:context=".fragment.Booking_02_Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"

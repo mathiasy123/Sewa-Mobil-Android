@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDarkBlue"
     android:orientation="vertical"
-    tools:context=".GreetingActivity">
+    android:background="@color/colorBlueWelcome"
+    tools:context=".activitiy.GreetingActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slideViewPager"
@@ -32,7 +32,7 @@
         android:layout_marginTop="530dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
-        android:textColor="@color/colorTransparentWhite" />
+        android:textColor="@color/colorWhite" />
 
     <Button
         android:id="@+id/nextBtn"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="530dp"
         android:layout_marginLeft="280dp"
-        android:textColor="@color/colorTransparentWhite"
+        android:textColor="@color/colorWhite"
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:text="Next" />

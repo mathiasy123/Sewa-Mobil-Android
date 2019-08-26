@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.check_internet_connection;
+import com.path_studio.arphatapp.fragment.Booking_01_Fragment;
 
 public class BookingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,6 +31,17 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+
+        //check Internet Connection
+        check_internet_connection cic = new check_internet_connection();
+        if(cic.check_internet(getApplicationContext()) == false){
+            //direct ke halaman Disconnect
+            Intent i = new Intent(BookingActivity.this, DisconnectActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        //------------------------------------------------------------------------------------------
 
         mBack = (ImageView) findViewById(R.id.backButton_booking);
 

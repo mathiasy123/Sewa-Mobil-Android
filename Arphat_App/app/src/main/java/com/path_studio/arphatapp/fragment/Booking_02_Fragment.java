@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.fragment;
 
 import android.os.Bundle;
 
@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.slider_adapter_choose_car;
 
 public class Booking_02_Fragment extends Fragment implements View.OnClickListener{
 

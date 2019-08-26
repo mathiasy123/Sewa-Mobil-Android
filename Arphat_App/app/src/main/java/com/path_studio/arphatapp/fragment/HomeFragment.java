@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.activitiy.BookingActivity;
+import com.path_studio.arphatapp.activitiy.MapsActivity;
+import com.path_studio.arphatapp.activitiy.OurOfficeActivity;
+import com.path_studio.arphatapp.slider_adapter_promotion;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 

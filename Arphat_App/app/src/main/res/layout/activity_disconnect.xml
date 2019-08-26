@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activitiy.DisconnectActivity"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="281dp"
+        android:layout_margin="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/disconnect_icon" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disconnect"
+        android:textSize="30dp"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please Check Your Internet Connection"
+        android:textSize="12dp"
+        android:textColor="@color/colorDarkGrey"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/retry_check_connection"
+        android:layout_width="238dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:background="@color/colorDarkBlue"
+        android:text="Retry"
+        android:textColor="@color/colorWhite" />
+
+</LinearLayout>

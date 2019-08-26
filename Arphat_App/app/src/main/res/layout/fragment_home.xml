@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".fragment.HomeFragment">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                 android:layout_width="35dp"
                 android:layout_height="43dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-80dp"
+                android:layout_marginTop="-55dp"
                 android:orientation="horizontal">
 
             </LinearLayout>

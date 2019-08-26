@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -51,6 +51,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.check_internet_connection;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
@@ -83,6 +85,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //check Internet Connection
+        check_internet_connection cic = new check_internet_connection();
+        if(cic.check_internet(getApplicationContext()) == false){
+            //direct ke halaman Disconnect
+            Intent i = new Intent(MapsActivity.this, DisconnectActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        //------------------------------------------------------------------------------------------
 
         materialSearchBar = findViewById(R.id.searchBar);
         btnFind = findViewById(R.id.btn_find);

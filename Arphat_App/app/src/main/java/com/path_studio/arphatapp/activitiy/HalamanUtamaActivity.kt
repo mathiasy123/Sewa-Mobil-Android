@@ -1,8 +1,11 @@
-package com.path_studio.arphatapp
+package com.path_studio.arphatapp.activitiy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.iammert.library.readablebottombar.ReadableBottomBar
+import com.path_studio.arphatapp.fragment.HomeFragment
+import com.path_studio.arphatapp.R
+import com.path_studio.arphatapp.fragment.AccountFragment
 import kotlinx.android.synthetic.main.activity_halaman_utama.*
 
 class HalamanUtamaActivity : AppCompatActivity() {

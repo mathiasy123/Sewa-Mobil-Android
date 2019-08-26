@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpeningActivity"
+    tools:context=".activitiy.OpeningActivity"
     android:orientation="vertical"
     android:id="@+id/openingScreen"
-    android:background="@color/colorDarkBlue">
+    android:background="@color/colorBlueWelcome">
 
 
     <RelativeLayout
@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:padding="30dp"
         android:layout_marginTop="150dp"
-        android:background="@drawable/round_btn">
+        android:background="@drawable/round_btn_white">
 
         <ImageView
             android:id="@+id/imageView"

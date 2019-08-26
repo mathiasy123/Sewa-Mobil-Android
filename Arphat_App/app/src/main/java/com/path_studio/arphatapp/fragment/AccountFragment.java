@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.path_studio.arphatapp.activitiy.LoginActivity;
+import com.path_studio.arphatapp.R;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -34,6 +41,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private DatabaseReference mDatabase;
 
     private TextView mprofileName, mprofileEmail, mDisplayUsername, mDisplayEmail, mDisplayPhone, mDisplayAddress;
     private de.hdodenhof.circleimageview.CircleImageView mImageView;
@@ -51,6 +60,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //bagian google
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mprofileName = (TextView) view.findViewById(R.id.profileName);
         mprofileEmail = (TextView) view.findViewById(R.id.profileEmail);
@@ -117,11 +127,30 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                 new AccountFragment.DownloadImageTask().execute(user.getPhotoUrl().toString());
             }
 
-            mprofileName.setText(user.getDisplayName());
-            mDisplayUsername.setText(user.getDisplayName());
 
-            mprofileEmail.setText(user.getEmail());
-            mDisplayEmail.setText(user.getEmail());
+            //ambil username dan phone number nya dari database
+            DatabaseReference current_user_db = mDatabase.child("Users").child("Customers");
+
+            current_user_db.orderByChild("Email").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot datas: dataSnapshot.getChildren()){
+                        String Username = datas.child("Username").getValue().toString();
+                        String Email = datas.child("Email").getValue().toString();
+
+                        //tampilkan hasilnya
+                        mprofileName.setText(Username);
+                        mDisplayUsername.setText(Username);
+
+                        mprofileEmail.setText(Email);
+                        mDisplayEmail.setText(Email);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
         } else {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
@@ -146,16 +175,20 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
         //sign out
 
-        for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
-            if (user.getProviderId().equals("facebook.com")) {
-                Facebook_signOut();
-            }else if(user.getProviderId().equals("google.com")){
-                Google_signOut();
-            }else if(user.getProviderId().equals("twitter.com")){
-                Twitter_signOut();
-            }else{
-                Email_signout();
+        if(!TextUtils.isEmpty(FirebaseAuth.getInstance().getCurrentUser().getProviderId())){
+            for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                if (user.getProviderId().equals("facebook.com")) {
+                    Facebook_signOut();
+                }else if(user.getProviderId().equals("google.com")){
+                    Google_signOut();
+                }else if(user.getProviderId().equals("twitter.com")){
+                    Twitter_signOut();
+                }else{
+                    Email_signout();
+                }
             }
+        }else{
+            Email_signout();
         }
 
     }
@@ -228,6 +261,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
     public void Email_signout(){
         // Firebase sign out
         FirebaseAuth.getInstance().signOut();
+        updateUI(null);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

@@ -1,16 +1,20 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.slider_adapter;
 
 public class GreetingActivity extends AppCompatActivity {
 
@@ -24,18 +28,23 @@ public class GreetingActivity extends AppCompatActivity {
     private int nCurrentPage;
 
     private Button nNextBtn;
-    private Button nprevBtn;
+    private Button nPrevBtn;
+
+    private SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_greeting);
 
+        // proses check apakah aplikasi first time run
+        prefs = getSharedPreferences("com.android.application", MODE_PRIVATE);
+
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         mDotLayout = (LinearLayout) findViewById(R.id.dotsLayout);
 
         nNextBtn = (Button) findViewById(R.id.nextBtn);
-        nprevBtn = (Button) findViewById(R.id.prevBtn);
+        nPrevBtn = (Button) findViewById(R.id.prevBtn);
 
         sliderAdapter = new slider_adapter(this);
         mSlideViewPager.setAdapter(sliderAdapter );
@@ -60,13 +69,29 @@ public class GreetingActivity extends AppCompatActivity {
             }
         });
 
-        nprevBtn.setOnClickListener(new View.OnClickListener(){
+        nPrevBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void  onClick(View view){
                 mSlideViewPager.setCurrentItem(nCurrentPage - 1);
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }else{
+            //skip langsung ke halaman login
+            Intent i = new Intent(GreetingActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     public void addDotsIndicator(int position){
@@ -77,13 +102,13 @@ public class GreetingActivity extends AppCompatActivity {
             mDosts[i] = new TextView(this);
             mDosts[i].setText(Html.fromHtml("&#8226;",0));
             mDosts[i].setTextSize(35);
-            mDosts[i].setTextColor(ContextCompat.getColor(this, R.color.colorSolidGrey));
+            mDosts[i].setTextColor(ContextCompat.getColor(this, R.color.colorDarkBlue));
 
             mDotLayout.addView(mDosts[i]);
         }
 
         if(mDosts.length>0){
-            mDosts[position].setTextColor(ContextCompat.getColor(this, R.color.colorSkyBlue));
+            mDosts[position].setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
 
     }
@@ -103,26 +128,26 @@ public class GreetingActivity extends AppCompatActivity {
 
             if(i==0){
                 nNextBtn.setEnabled(true);
-                nprevBtn.setEnabled(false);
-                nprevBtn.setVisibility(View.INVISIBLE);
+                nPrevBtn.setEnabled(false);
+                nPrevBtn.setVisibility(View.INVISIBLE);
 
                 nNextBtn.setText("Next");
-                nprevBtn.setText("");
+                nPrevBtn.setText("");
 
             }else if( i == mDosts.length-1){
                 nNextBtn.setEnabled(true);
-                nprevBtn.setEnabled(true);
-                nprevBtn.setVisibility(View.VISIBLE);
+                nPrevBtn.setEnabled(true);
+                nPrevBtn.setVisibility(View.VISIBLE);
 
                 nNextBtn.setText("Finish");
-                nprevBtn.setText("Back");
+                nPrevBtn.setText("Back");
             }else{
                 nNextBtn.setEnabled(true);
-                nprevBtn.setEnabled(true);
-                nprevBtn.setVisibility(View.VISIBLE);
+                nPrevBtn.setEnabled(true);
+                nPrevBtn.setVisibility(View.VISIBLE);
 
                 nNextBtn.setText("Next");
-                nprevBtn.setText("Back");
+                nPrevBtn.setText("Back");
             }
 
         }

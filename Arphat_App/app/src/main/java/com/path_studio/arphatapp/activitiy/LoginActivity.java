@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.activitiy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +41,8 @@ import com.facebook.login.widget.LoginButton;
 
 import com.google.firebase.auth.TwitterAuthProvider;
 
+import com.path_studio.arphatapp.R;
+import com.path_studio.arphatapp.check_internet_connection;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -75,6 +77,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //check Internet Connection
+        check_internet_connection cic = new check_internet_connection();
+        if(cic.check_internet(getApplicationContext()) == false){
+            //direct ke halaman Disconnect
+            Intent i = new Intent(LoginActivity.this, DisconnectActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        //------------------------------------------------------------------------------------------
+
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         // Configure Twitter SDK
@@ -101,9 +115,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-
-
 
 
         // Initialize Facebook Login button
@@ -161,10 +172,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         };
-
-
-
-
 
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
@@ -314,6 +321,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(mAuth.getCurrentUser().getUid());
+                current_user_db.child("Username").setValue(mAuth.getCurrentUser().getDisplayName());
+                current_user_db.child("Email").setValue(mAuth.getCurrentUser().getEmail());
+                current_user_db.child("Password").setValue("No Password");
+                current_user_db.child("SignUp Method").setValue("Google Account");
+
                 hideProgressDialog();
             }
         });
