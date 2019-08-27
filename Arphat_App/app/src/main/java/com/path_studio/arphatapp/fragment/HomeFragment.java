@@ -20,7 +20,7 @@ import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.activitiy.BookingActivity;
 import com.path_studio.arphatapp.activitiy.MapsActivity;
 import com.path_studio.arphatapp.activitiy.OurOfficeActivity;
-import com.path_studio.arphatapp.slider_adapter_promotion;
+import com.path_studio.arphatapp.Adapter.slider_adapter_promotion;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 

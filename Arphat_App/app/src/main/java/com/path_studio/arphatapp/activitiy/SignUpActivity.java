@@ -139,6 +139,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                             current_user_db.child("Username").setValue(username);
                                                             current_user_db.child("Email").setValue(email);
                                                             current_user_db.child("Password").setValue(password);
+                                                            current_user_db.child("PhoneNumber").setValue("-");
+                                                            current_user_db.child("Address").setValue("-");
                                                             current_user_db.child("SignUp Method").setValue("Email&Password");
                                                         }
                                                     }

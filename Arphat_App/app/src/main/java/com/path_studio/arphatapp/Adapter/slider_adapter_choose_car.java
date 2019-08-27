@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.path_studio.arphatapp.R;
 
 public class slider_adapter_choose_car extends PagerAdapter{
     Context context;

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
     private TextView mprofileName, mprofileEmail, mDisplayUsername, mDisplayEmail, mDisplayPhone, mDisplayAddress;
     private de.hdodenhof.circleimageview.CircleImageView mImageView;
-    private Button mLogout;
+    private Button mLogout, mSetAddress, mSetPhone;
+
+    private AlertDialog.Builder dialog;
+    private LayoutInflater inflater;
+    private View dialogView;
+    private EditText m_txt_no_telp, m_txt_alamat;
 
     @Nullable
     @Override
@@ -58,6 +64,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        mSetPhone = view.findViewById(R.id.set_phone_number);
+        mSetAddress = view.findViewById(R.id.set_address);
+        mDisplayPhone = view.findViewById(R.id.display_phoneNumber);
+        mDisplayAddress = view.findViewById(R.id.display_address);
+
+        mSetPhone.setOnClickListener(this);
+        mSetAddress.setOnClickListener(this);
+
         //bagian google
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -91,17 +105,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                 }
             }
         };
-
-//        // Configure Google Sign In
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-
-//        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .enableAutoManage(getActivity(), this)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
 
     }
 
@@ -137,6 +140,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                     for(DataSnapshot datas: dataSnapshot.getChildren()){
                         String Username = datas.child("Username").getValue().toString();
                         String Email = datas.child("Email").getValue().toString();
+                        String Address = datas.child("Address").getValue().toString();
+                        String Phone = datas.child("PhoneNumber").getValue().toString();
 
                         //tampilkan hasilnya
                         mprofileName.setText(Username);
@@ -144,6 +149,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
                         mprofileEmail.setText(Email);
                         mDisplayEmail.setText(Email);
+
+                        mDisplayPhone.setText(Phone);
+                        mDisplayAddress.setText(Address);
                     }
                 }
                 @Override
@@ -167,6 +175,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
         switch (view.getId()) {
             case R.id.signout_btn:
                 logout();
+                break;
+            case R.id.set_phone_number:
+                DialogForm_1();
+                break;
+            case R.id.set_address:
+                DialogForm_2();
                 break;
         }
     }
@@ -283,6 +297,82 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                 mImageView.setImageBitmap(result);
             }
         }
+    }
+
+    private void DialogForm_1() {
+        dialog = new AlertDialog.Builder(getActivity());
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.custom_alert_phone_number, null);
+        dialog.setView(dialogView);
+        dialog.setCancelable(true);
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.setTitle("Update your Phone Number");
+
+        m_txt_no_telp    = (EditText) dialogView.findViewById(R.id.form_no_telp);
+
+        dialog.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String hasil    = m_txt_no_telp.getText().toString();
+                String user_id = mAuth.getUid();
+
+                //masukin ke database
+                DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(user_id);
+                current_user_db.child("PhoneNumber").setValue(hasil);
+
+                mDisplayPhone.setText(hasil);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void DialogForm_2() {
+        dialog = new AlertDialog.Builder(getActivity());
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.custom_alert_address, null);
+        dialog.setView(dialogView);
+        dialog.setCancelable(true);
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.setTitle("Update your Phone Number");
+
+        m_txt_alamat     = (EditText) dialogView.findViewById(R.id.form_alamat);
+
+        dialog.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String hasil    = m_txt_alamat.getText().toString();
+                String user_id = mAuth.getUid();
+
+                //masukin ke database
+                DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(user_id);
+                current_user_db.child("Address").setValue(hasil);
+
+                mDisplayAddress.setText(hasil);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }

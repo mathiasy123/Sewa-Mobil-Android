@@ -325,6 +325,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 current_user_db.child("Username").setValue(mAuth.getCurrentUser().getDisplayName());
                 current_user_db.child("Email").setValue(mAuth.getCurrentUser().getEmail());
                 current_user_db.child("Password").setValue("No Password");
+                current_user_db.child("PhoneNumber").setValue("-");
+                current_user_db.child("Address").setValue("-");
                 current_user_db.child("SignUp Method").setValue("Google Account");
 
                 hideProgressDialog();

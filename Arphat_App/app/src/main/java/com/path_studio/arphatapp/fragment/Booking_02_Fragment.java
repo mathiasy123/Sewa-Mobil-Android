@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.path_studio.arphatapp.R;
-import com.path_studio.arphatapp.slider_adapter_choose_car;
+import com.path_studio.arphatapp.Adapter.slider_adapter_choose_car;
 
 public class Booking_02_Fragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 

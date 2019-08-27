@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.path_studio.arphatapp.R;
-import com.path_studio.arphatapp.slider_adapter;
+import com.path_studio.arphatapp.Adapter.slider_adapter;
 
 public class GreetingActivity extends AppCompatActivity {
 
