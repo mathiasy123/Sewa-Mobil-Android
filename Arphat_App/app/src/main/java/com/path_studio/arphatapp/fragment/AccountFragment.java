@@ -1,6 +1,7 @@
 package com.path_studio.arphatapp.fragment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
     private View dialogView;
     private EditText m_txt_no_telp, m_txt_alamat;
 
+    private ProgressDialog pDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +67,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+
         mSetPhone = view.findViewById(R.id.set_phone_number);
         mSetAddress = view.findViewById(R.id.set_address);
         mDisplayPhone = view.findViewById(R.id.display_phoneNumber);
@@ -125,11 +131,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
     }
 
     private void updateUI(FirebaseUser user) {
+
         if (user != null) {
             if (user.getPhotoUrl() != null) {
                 new AccountFragment.DownloadImageTask().execute(user.getPhotoUrl().toString());
             }
 
+            showDialog();
 
             //ambil username dan phone number nya dari database
             DatabaseReference current_user_db = mDatabase.child("Users").child("Customers");
@@ -152,10 +160,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
                         mDisplayPhone.setText(Phone);
                         mDisplayAddress.setText(Address);
+
+                        hideDialog();
                     }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+                    hideDialog();
                 }
             });
 
@@ -314,6 +325,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                showDialog();
                 String hasil    = m_txt_no_telp.getText().toString();
                 String user_id = mAuth.getUid();
 
@@ -322,6 +334,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                 current_user_db.child("PhoneNumber").setValue(hasil);
 
                 mDisplayPhone.setText(hasil);
+                hideDialog();
                 dialog.dismiss();
             }
         });
@@ -352,6 +365,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                showDialog();
                 String hasil    = m_txt_alamat.getText().toString();
                 String user_id = mAuth.getUid();
 
@@ -360,6 +374,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
                 current_user_db.child("Address").setValue(hasil);
 
                 mDisplayAddress.setText(hasil);
+                hideDialog();
                 dialog.dismiss();
             }
         });
@@ -373,6 +388,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
         });
 
         dialog.show();
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

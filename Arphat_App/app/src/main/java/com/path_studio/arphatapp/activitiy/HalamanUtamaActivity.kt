@@ -6,6 +6,7 @@ import com.iammert.library.readablebottombar.ReadableBottomBar
 import com.path_studio.arphatapp.fragment.HomeFragment
 import com.path_studio.arphatapp.R
 import com.path_studio.arphatapp.fragment.AccountFragment
+import com.path_studio.arphatapp.fragment.InboxFragment
 import kotlinx.android.synthetic.main.activity_halaman_utama.*
 
 class HalamanUtamaActivity : AppCompatActivity() {
@@ -36,6 +37,8 @@ class HalamanUtamaActivity : AppCompatActivity() {
 
                     3->{
                         //untuk inbox
+                        val transaction3 = supportFragmentManager.beginTransaction()
+                        transaction3.replace(R.id.fragment_container, InboxFragment()).commit()
                     }
 
                     4->{

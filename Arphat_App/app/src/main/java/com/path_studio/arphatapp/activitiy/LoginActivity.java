@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -54,6 +62,12 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.google.firebase.auth.FacebookAuthProvider;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
     public String status_login="";
@@ -71,6 +85,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
     private TwitterLoginButton mLoginButton;
+
+    private ProgressDialog pDialog;
+    private String token_login = "";
 
     private static LoginActivity app;
 
@@ -192,6 +209,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogle.setOnClickListener(this);
 
         app = this;
+
+        pDialog = new ProgressDialog(this);
+        login_API();
 
     }
 
@@ -398,6 +418,92 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    private void login_API() {
+        //Getting values from edit texts
+        pDialog.setMessage("Login Process...");
+        showDialog();
+        final String username = "admin";
+        final String password = "1234";
+        pDialog.setMessage("Login Process...");
+        showDialog();
+        //Creating a string request
+        StringRequest request = new StringRequest(Request.Method.POST, "http://10.0.2.2:5000/api/login",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.equals(null)) {
+                            Log.e("Your Array Response", response);
+
+                            try {
+                                JSONObject responeJsonObject = new JSONObject(response);
+                                token_login = responeJsonObject.getString("Token");
+
+                                //share nilai tokennya
+                                SharedPreferences mSettings = LoginActivity.this.getSharedPreferences("Booking_data", LoginActivity.this.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putString("Login_Token", token_login);
+                                editor.apply();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            hideDialog();
+                        } else {
+                            Log.e("Your Array Response", "Data Null");
+                            hideDialog();
+                            Toast.makeText(LoginActivity.this, "Data null", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                        Log.e("error is ", "" + error);
+                        hideDialog();
+                        Toast.makeText(LoginActivity.this, "The server unreachable", Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+
+            //This is for Headers If You Needed
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer "+token_login);
+                return params;
+            }
+
+            //Pass Your Parameters here
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("role", "admin");
+                params.put("username", username);
+                params.put("password", password);
+                return params;
+            }
+
+        };
+
+        //Adding the string request to the queue
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
+
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

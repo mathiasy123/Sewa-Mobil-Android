@@ -8,43 +8,34 @@ public class Mobil {
     private int harga;
     private String status;
 
-    public int getHarga() {
-        return harga;
+    public Mobil(){ }
+
+    public Mobil(int jenis, String plat, int kursi, int harga, String status){
+        this.id_jenis = jenis;
+        this.plat = plat;
+        this.kursi = kursi;
+        this.harga = harga;
+        this.status = status;
     }
 
-    public void setHarga(int harga) {
-        this.harga = harga;
+    public int getHarga() {
+        return harga;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getKursi() {
         return kursi;
-    }
-
-    public void setKursi(int kursi) {
-        this.kursi = kursi;
     }
 
     public String getPlat() {
         return plat;
     }
 
-    public void setPlat(String plat) {
-        this.plat = plat;
-    }
-
     public int getId_jenis() {
         return id_jenis;
     }
 
-    public void setId_jenis(int id_jenis) {
-        this.id_jenis = id_jenis;
-    }
 }

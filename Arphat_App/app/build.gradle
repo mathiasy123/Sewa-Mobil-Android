@@ -45,22 +45,20 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-core:17.1.0'
 
     implementation 'com.google.firebase:firebase-auth:19.0.0'
-    implementation 'com.google.firebase:firebase-database:18.0.1'
+    implementation 'com.google.firebase:firebase-database:19.0.0'
 
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.facebook.android:facebook-login:4.40.0'
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-login:5.4.0'
+    implementation 'com.facebook.android:facebook-android-sdk:5.4.0'
 
     implementation 'com.twitter.sdk.android:twitter:3.1.0'
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.0'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-composer:3.1.1'
     implementation 'com.twitter.sdk.android:twitter-mopub:3.1.1'
-
-    implementation 'de.hdodenhof:circleimageview:2.1.0'
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
@@ -97,6 +95,11 @@ dependencies {
     //datetime picker in style
     implementation 'com.github.florent37:SingleDateAndTimePicker:v2.0.4'
 
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 }
 
 repositories {
@@ -108,4 +111,3 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
-
