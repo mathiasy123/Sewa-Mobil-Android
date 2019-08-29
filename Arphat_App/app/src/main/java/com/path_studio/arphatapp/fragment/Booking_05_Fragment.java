@@ -175,4 +175,8 @@ public class Booking_05_Fragment extends Fragment implements View.OnClickListene
         mEnd.setText(ending);
     }
 
+    private void sent_booking_data(){
+
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.InboxRecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.path_studio.arphatapp.R;
 
 import java.util.ArrayList;
 

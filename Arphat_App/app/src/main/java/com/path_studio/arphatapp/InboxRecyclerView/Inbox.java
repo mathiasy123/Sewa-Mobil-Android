@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.InboxRecyclerView;
 
 public class Inbox {
     private String email;

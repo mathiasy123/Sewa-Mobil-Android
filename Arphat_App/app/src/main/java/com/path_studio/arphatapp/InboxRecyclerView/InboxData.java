@@ -1,4 +1,4 @@
-package com.path_studio.arphatapp;
+package com.path_studio.arphatapp.InboxRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;

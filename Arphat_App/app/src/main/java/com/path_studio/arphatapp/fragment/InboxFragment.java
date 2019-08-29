@@ -21,11 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.path_studio.arphatapp.Inbox;
-import com.path_studio.arphatapp.InboxData;
-import com.path_studio.arphatapp.ListInboxAdapter;
+import com.path_studio.arphatapp.InboxRecyclerView.Inbox;
+import com.path_studio.arphatapp.InboxRecyclerView.InboxData;
+import com.path_studio.arphatapp.InboxRecyclerView.ListInboxAdapter;
 import com.path_studio.arphatapp.R;
-import com.path_studio.arphatapp.activitiy.SignUpActivity;
 
 import org.json.JSONObject;
 
