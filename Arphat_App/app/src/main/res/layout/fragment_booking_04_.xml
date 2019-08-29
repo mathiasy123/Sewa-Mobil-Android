@@ -16,7 +16,7 @@
             android:layout_height="218dp"
             android:src="@drawable/bigben" />
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="false"
@@ -85,12 +85,12 @@
                             android:ems="6"
                             android:inputType="date" />
 
+
                         <EditText
                             android:id="@+id/time_takoff"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="10dp"
                             android:ems="5"
                             android:inputType="time" />
 
@@ -138,7 +138,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="10dp"
                             android:ems="5"
                             android:inputType="time" />
 

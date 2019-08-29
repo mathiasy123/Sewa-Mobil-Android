@@ -3,7 +3,9 @@ package com.path_studio.arphatapp.activitiy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.safetynet.SafetyNet;
@@ -29,6 +40,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.check_internet_connection;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button register;
@@ -40,6 +59,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private DatabaseReference mDatabase;
     private static final String TAG = "SignUpActivity";
+
+    private ProgressDialog pDialog;
+    private SharedPreferences mSettings;
+    private String token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +79,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         //------------------------------------------------------------------------------------------
+
+        pDialog = new ProgressDialog(this);
+        mSettings = SignUpActivity.this.getSharedPreferences("Login_Data", SignUpActivity.this.MODE_PRIVATE);
+        Log.e("Token: ", mSettings.getString("Login_Token", "Missing Token"));
+        token = mSettings.getString("Login_Token", "Missing Token");
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -107,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.signup_btn:
-                SafetyNet.getClient(this).verifyWithRecaptcha("6LeW2LQUAAAAAFreXTKjdwXoM-CCvir_Vjk_qk6I")
+                SafetyNet.getClient(this).verifyWithRecaptcha("6Lfd67QUAAAAAKMFFu0x76quje1nz8MJL9YS41mL")
                         .addOnSuccessListener( this,
                                 new OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
                                     @Override
@@ -142,6 +170,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                             current_user_db.child("PhoneNumber").setValue("-");
                                                             current_user_db.child("Address").setValue("-");
                                                             current_user_db.child("SignUp Method").setValue("Email&Password");
+
+                                                            //masukan juga di database
+                                                            insert_user(user_id, email, password, "0", username ,"-");
+
                                                         }
                                                     }
                                                 });
@@ -169,7 +201,87 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 }
                             }
                         });
+
                 break;
         }
     }
+
+    private void insert_user(String get_UID, String get_email, String get_password, String get_phone, String get_username, String get_address) {
+        final String uid = get_UID;
+        final String email = get_email;
+        final String password = get_password;
+        final String phone = get_phone;
+        final String username = get_username;
+        final String address = get_address;
+
+        //Creating a string request
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:5000/api/user";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error.Response", error.toString());
+                        String json = null;
+                        NetworkResponse response = error.networkResponse;
+                        if(response != null && response.data != null){
+                            switch(response.statusCode){
+                                case 400:
+
+                                    json = new String(response.data);
+                                    System.out.println(json);
+                                    break;
+                            }
+                            //Additional cases
+                        }
+                    }
+                }
+        ) {
+
+            //This is for Headers If You Needed
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("UID", uid);
+                params.put("telepon", phone);
+                params.put("username", username);
+                params.put("password", password);
+                params.put("email", email);
+                params.put("alamat", address);
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
 }

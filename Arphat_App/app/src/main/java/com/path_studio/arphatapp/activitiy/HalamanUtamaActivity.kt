@@ -3,10 +3,8 @@ package com.path_studio.arphatapp.activitiy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.iammert.library.readablebottombar.ReadableBottomBar
-import com.path_studio.arphatapp.fragment.HomeFragment
 import com.path_studio.arphatapp.R
-import com.path_studio.arphatapp.fragment.AccountFragment
-import com.path_studio.arphatapp.fragment.InboxFragment
+import com.path_studio.arphatapp.fragment.*
 import kotlinx.android.synthetic.main.activity_halaman_utama.*
 
 class HalamanUtamaActivity : AppCompatActivity() {
@@ -30,9 +28,13 @@ class HalamanUtamaActivity : AppCompatActivity() {
 
                     1->{
                         //untuk history
+                        val transaction5 = supportFragmentManager.beginTransaction()
+                        transaction5.replace(R.id.fragment_container, HistoryFragment()).commit()
                     }
                     2->{
                         //untuk payment
+                        val transaction4 = supportFragmentManager.beginTransaction()
+                        transaction4.replace(R.id.fragment_container, PaymentFragment()).commit()
                     }
 
                     3->{

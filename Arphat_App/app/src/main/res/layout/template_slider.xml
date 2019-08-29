@@ -33,7 +33,7 @@
         android:padding="10dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         android:textAlignment="center"
-        android:textColor="@color/colorTransparentWhite"
+        android:textColor="@color/colorWhite"
         android:textSize="14dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="449dp" />

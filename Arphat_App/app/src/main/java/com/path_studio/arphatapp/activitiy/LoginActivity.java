@@ -17,10 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
@@ -62,6 +64,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.google.firebase.auth.FacebookAuthProvider;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,10 +89,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private CallbackManager mCallbackManager;
     private TwitterLoginButton mLoginButton;
 
-    private ProgressDialog pDialog;
-    private String token_login = "";
-
     private static LoginActivity app;
+
+    private SharedPreferences mSettings;
+    private String token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
         //------------------------------------------------------------------------------------------
+
+        mSettings = LoginActivity.this.getSharedPreferences("Login_Data", LoginActivity.this.MODE_PRIVATE);
+        Log.e("Token: ", mSettings.getString("Login_Token", "Missing Token"));
+        token = mSettings.getString("Login_Token", "Missing Token");
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
@@ -209,9 +216,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogle.setOnClickListener(this);
 
         app = this;
-
-        pDialog = new ProgressDialog(this);
-        login_API();
 
     }
 
@@ -349,6 +353,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 current_user_db.child("Address").setValue("-");
                 current_user_db.child("SignUp Method").setValue("Google Account");
 
+                //masukin data ke database
+                insert_user(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), "No Password", "0", mAuth.getCurrentUser().getDisplayName(), "-" );
+
                 hideProgressDialog();
             }
         });
@@ -420,90 +427,72 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void login_API() {
-        //Getting values from edit texts
-        pDialog.setMessage("Login Process...");
-        showDialog();
-        final String username = "admin";
-        final String password = "1234";
-        pDialog.setMessage("Login Process...");
-        showDialog();
+    private void insert_user(String get_UID, String get_email, String get_password, String get_phone, String get_username, String get_address) {
+        final String uid = get_UID;
+        final String email = get_email;
+        final String password = get_password;
+        final String phone = get_phone;
+        final String username = get_username;
+        final String address = get_address;
+
         //Creating a string request
-        StringRequest request = new StringRequest(Request.Method.POST, "http://10.0.2.2:5000/api/login",
-                new Response.Listener<String>() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:5000/api/user";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
                     @Override
                     public void onResponse(String response) {
-                        if (!response.equals(null)) {
-                            Log.e("Your Array Response", response);
-
-                            try {
-                                JSONObject responeJsonObject = new JSONObject(response);
-                                token_login = responeJsonObject.getString("Token");
-
-                                //share nilai tokennya
-                                SharedPreferences mSettings = LoginActivity.this.getSharedPreferences("Booking_data", LoginActivity.this.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = mSettings.edit();
-                                editor.putString("Login_Token", token_login);
-                                editor.apply();
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            hideDialog();
-                        } else {
-                            Log.e("Your Array Response", "Data Null");
-                            hideDialog();
-                            Toast.makeText(LoginActivity.this, "Data null", Toast.LENGTH_LONG).show();
-                        }
+                        // response
+                        Log.d("Response", response);
                     }
                 },
-                new Response.ErrorListener() {
+                new Response.ErrorListener()
+                {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //You can handle error here if you want
-                        Log.e("error is ", "" + error);
-                        hideDialog();
-                        Toast.makeText(LoginActivity.this, "The server unreachable", Toast.LENGTH_LONG).show();
+                        Log.e("Error.Response", error.toString());
+                        String json = null;
+                        NetworkResponse response = error.networkResponse;
+                        if(response != null && response.data != null){
+                            switch(response.statusCode){
+                                case 400:
 
+                                    json = new String(response.data);
+                                    System.out.println(json);
+                                    break;
+                            }
+                            //Additional cases
+                        }
                     }
-                }) {
+                }
+        ) {
 
             //This is for Headers If You Needed
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer "+token_login);
+                params.put("Authorization", "Bearer "+ token);
                 return params;
             }
 
-            //Pass Your Parameters here
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("role", "admin");
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("UID", uid);
+                params.put("telepon", phone);
                 params.put("username", username);
                 params.put("password", password);
+                params.put("email", email);
+                params.put("alamat", address);
+
                 return params;
             }
-
         };
+        queue.add(postRequest);
 
-        //Adding the string request to the queue
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(request);
-
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 
 }

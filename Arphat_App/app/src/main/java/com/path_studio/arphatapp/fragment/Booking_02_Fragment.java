@@ -49,6 +49,7 @@ public class Booking_02_Fragment extends Fragment implements View.OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         use_driver = (Switch) view.findViewById(R.id.include_driver);
+        use_driver.setChecked(true); //default true
         use_driver.setOnCheckedChangeListener(this);
 
         //keperluan pilih mobil

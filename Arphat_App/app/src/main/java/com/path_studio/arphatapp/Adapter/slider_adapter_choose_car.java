@@ -33,7 +33,7 @@ public class slider_adapter_choose_car extends PagerAdapter{
     };
 
     public String[] merek_mobil = {
-            "Toyota Calya",
+            "Daihatsu Alya",
             "Toyota Yaris",
             "Toyota Avanza",
             "Toyota Calya",

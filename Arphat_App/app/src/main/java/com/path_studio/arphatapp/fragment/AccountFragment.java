@@ -285,8 +285,24 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
 
     public void Email_signout(){
         // Firebase sign out
-        FirebaseAuth.getInstance().signOut();
-        updateUI(null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage(R.string.logout);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Firebase sign out
+                FirebaseAuth.getInstance().signOut();
+                updateUI(null);
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

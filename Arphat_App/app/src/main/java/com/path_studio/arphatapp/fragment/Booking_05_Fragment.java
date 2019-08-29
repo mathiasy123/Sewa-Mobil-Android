@@ -129,31 +129,31 @@ public class Booking_05_Fragment extends Fragment implements View.OnClickListene
         SharedPreferences mSettings = getActivity().getSharedPreferences("Booking_data", Context.MODE_PRIVATE);
         switch (mSettings.getInt("jenis_mobil", 0)){
             case 0:
-                mMerkMobil.setText("Alya");
+                mMerkMobil.setText("Daihatsu Alya");
                 break;
             case 1:
-                mMerkMobil.setText("Yaris");
+                mMerkMobil.setText("Toyota Yaris");
                 break;
             case 2:
-                mMerkMobil.setText("Avanza");
+                mMerkMobil.setText("Toyota Avanza");
                 break;
             case 3:
-                mMerkMobil.setText("Calya");
+                mMerkMobil.setText("Toyota Calya");
                 break;
             case 4:
-                mMerkMobil.setText("Kijang Inova");
+                mMerkMobil.setText("Toyota Kijang Inova");
                 break;
             case 5:
-                mMerkMobil.setText("Xenia");
+                mMerkMobil.setText("Daihatsu Xenia");
                 break;
             case 6:
-                mMerkMobil.setText("Mobilio");
+                mMerkMobil.setText("Honda Mobilio");
                 break;
             case 7:
-                mMerkMobil.setText("Elf");
+                mMerkMobil.setText("Isuzu Elf");
                 break;
             case 8:
-                mMerkMobil.setText("Hiace");
+                mMerkMobil.setText("Toyota Hiace");
                 break;
         }
 
@@ -167,6 +167,12 @@ public class Booking_05_Fragment extends Fragment implements View.OnClickListene
 
         mPickup.setText(mSettings.getString("pickup_location","Missing Pick Up Location"));
         mDestination.setText(mSettings.getString("destination_location","Missing Destination Location"));
+
+        String starting = mSettings.getString("takeOff_Date","0000/00/00")+ ", "+mSettings.getString("takeOff_time","00:00");
+        mStart.setText(starting);
+
+        String ending = mSettings.getString("return_Date","0000/00/00")+ ", "+mSettings.getString("return_time","00:00");
+        mEnd.setText(ending);
     }
 
 }

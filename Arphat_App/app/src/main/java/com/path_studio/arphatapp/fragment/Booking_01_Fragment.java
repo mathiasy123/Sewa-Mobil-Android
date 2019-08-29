@@ -46,7 +46,7 @@ public class Booking_01_Fragment extends Fragment implements View.OnClickListene
             case R.id.nextBtn_booking_01:
 
                 //check apakah form sudah terisi
-                if(!TextUtils.isEmpty(form_jumlah_penumpang.getText()) && Integer.parseInt(form_jumlah_penumpang.getText().toString()) > 0){
+                if(!TextUtils.isEmpty(form_jumlah_penumpang.getText()) && Integer.parseInt(form_jumlah_penumpang.getText().toString()) > 0 && Integer.parseInt(form_jumlah_penumpang.getText().toString()) <= 16){
                     //simpan data sementara di share pref
                     SharedPreferences mSettings = getActivity().getSharedPreferences("Booking_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mSettings.edit();
@@ -60,6 +60,8 @@ public class Booking_01_Fragment extends Fragment implements View.OnClickListene
                     ft.commit();
                 }else if(!TextUtils.isEmpty(form_jumlah_penumpang.getText()) && Integer.parseInt(form_jumlah_penumpang.getText().toString()) <= 0){
                     Toast.makeText(getActivity(), "Penumpang minimal berjumlah 1 orang", Toast.LENGTH_SHORT).show();
+                }else if(!TextUtils.isEmpty(form_jumlah_penumpang.getText()) && Integer.parseInt(form_jumlah_penumpang.getText().toString()) >= 16){
+                    Toast.makeText(getActivity(), "Penumpang Maximal berjumlah 16 orang", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(), "Form is still empty...", Toast.LENGTH_SHORT).show();
                 }
