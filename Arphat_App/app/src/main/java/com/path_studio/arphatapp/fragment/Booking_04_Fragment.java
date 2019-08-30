@@ -100,7 +100,7 @@ public class Booking_04_Fragment extends Fragment implements View.OnClickListene
                             @Override
                             public void onDateSelected(Date date) {
                                 final String OLD_FORMAT = "EEE MMM dd HH:mm:ss z yyyy";
-                                final String NEW_FORMAT = "yyyy/MM/dd";
+                                final String NEW_FORMAT = "yyyy-MM-dd";
 
                                 // old = Sat Aug 31 21:20:00 GMT+07:00 2019
                                 String oldDateString = date.toString();
@@ -167,7 +167,7 @@ public class Booking_04_Fragment extends Fragment implements View.OnClickListene
                             public void onDateSelected(Date date) {
 
                                 final String OLD_FORMAT = "EEE MMM dd HH:mm:ss z yyyy";
-                                final String NEW_FORMAT = "yyyy/MM/dd";
+                                final String NEW_FORMAT = "yyyy-MM-dd";
 
                                 // old = Sat Aug 31 21:20:00 GMT+07:00 2019
                                 String oldDateString = date.toString();

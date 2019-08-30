@@ -204,12 +204,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener, G
             for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
                 if (user.getProviderId().equals("facebook.com")) {
                     Facebook_signOut();
+                    break;
                 }else if(user.getProviderId().equals("google.com")){
                     Google_signOut();
+                    break;
                 }else if(user.getProviderId().equals("twitter.com")){
                     Twitter_signOut();
+                    break;
                 }else{
                     Email_signout();
+                    break;
                 }
             }
         }else{

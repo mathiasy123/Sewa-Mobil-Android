@@ -50,9 +50,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mSettings = getActivity().getSharedPreferences("Login_Data", getActivity().MODE_PRIVATE);
-        token = mSettings.getString("Login_Token", "Missing Token");
-
-        get_user();
+        token = mSettings.getString("Login_Token_Customer", "Missing Token");
 
         rvHeroes = view.findViewById(R.id.rv_heroes);
         rvHeroes.setHasFixedSize(true);
@@ -85,42 +83,6 @@ public class InboxFragment extends Fragment implements View.OnClickListener{
             case R.id.back_to_homePage:
                 break;
         }
-    }
-
-    private void get_user(){
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-
-        final String url = "http://10.0.2.2:5000/api/user";
-
-        // prepare the Request
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        Log.d("Response", response.toString());
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
-                }) {
-
-            //This is for Headers If You Needed
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer " + token);
-                return params;
-            }
-        };
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
     }
 
 }

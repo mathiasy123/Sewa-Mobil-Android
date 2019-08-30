@@ -68,7 +68,7 @@ public class OpeningActivity extends AppCompatActivity {
                                 //share nilai tokennya
                                 SharedPreferences mSettings = OpeningActivity.this.getSharedPreferences("Login_Data", OpeningActivity.this.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = mSettings.edit();
-                                editor.putString("Login_Token", token_login);
+                                editor.putString("Login_Token_Admin", token_login);
                                 editor.apply();
 
                             } catch (JSONException e) {

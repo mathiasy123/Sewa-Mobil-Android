@@ -39,6 +39,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -51,6 +53,7 @@ import com.facebook.login.widget.LoginButton;
 
 import com.google.firebase.auth.TwitterAuthProvider;
 
+import com.google.firebase.database.ValueEventListener;
 import com.path_studio.arphatapp.R;
 import com.path_studio.arphatapp.check_internet_connection;
 import com.twitter.sdk.android.core.Callback;
@@ -92,7 +95,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static LoginActivity app;
 
     private SharedPreferences mSettings;
-    private String token = "";
+    private String token_login_admin = "";
+    private String token_login_customer = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +112,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
         //------------------------------------------------------------------------------------------
+        mSettings = this.getSharedPreferences("Login_Data", this.MODE_PRIVATE);
+        token_login_admin = mSettings.getString("Login_Token_Admin", "Missing Token");
 
-        mSettings = LoginActivity.this.getSharedPreferences("Login_Data", LoginActivity.this.MODE_PRIVATE);
-        Log.e("Token: ", mSettings.getString("Login_Token", "Missing Token"));
-        token = mSettings.getString("Login_Token", "Missing Token");
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
@@ -270,6 +273,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
                         Toast.makeText(LoginActivity.this, "Sign in Error", Toast.LENGTH_SHORT).show();
+                    }else{
+                        //dapetin token buat customernya
+                        login_Customer_manual(email, password);
                     }
                 }
             });
@@ -345,17 +351,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(mAuth.getCurrentUser().getUid());
-                current_user_db.child("Username").setValue(mAuth.getCurrentUser().getDisplayName());
-                current_user_db.child("Email").setValue(mAuth.getCurrentUser().getEmail());
-                current_user_db.child("Password").setValue("No Password");
-                current_user_db.child("PhoneNumber").setValue("-");
-                current_user_db.child("Address").setValue("-");
-                current_user_db.child("SignUp Method").setValue("Google Account");
+                //cek apakah datanya uda ada di database firebase
+                check_user_in_database();
 
-                //masukin data ke database
-                insert_user(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), "No Password", "0", mAuth.getCurrentUser().getDisplayName(), "-" );
+                //dapetin token user dan adminnya
+                login_Customer_Google();
 
+                //hide progressbarnya
                 hideProgressDialog();
             }
         });
@@ -435,6 +437,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         final String username = get_username;
         final String address = get_address;
 
+        //ambil token
+        mSettings = LoginActivity.this.getSharedPreferences("Login_Data", LoginActivity.this.MODE_PRIVATE);
+        Log.e("Token_admin: ", mSettings.getString("Login_Token", "Missing Token"));
+        String token = mSettings.getString("Login_Token", "Missing Token");
+
         //Creating a string request
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:5000/api/user";
@@ -495,4 +502,171 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+
+
+
+
+
+
+    private void login_Customer_manual(String mEmail, String mPassword) {
+        //Getting values from edit texts
+        final String email = mEmail;
+        final String password = mPassword;
+
+        //Creating a string request
+        StringRequest request = new StringRequest(Request.Method.POST, "http://10.0.2.2:5000/api/login",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.equals(null)) {
+                            Log.e("Your Array Response", response);
+
+                            try {
+                                JSONObject responeJsonObject = new JSONObject(response);
+                                token_login_customer = responeJsonObject.getString("Token");
+                                Log.e("Token User",token_login_customer);
+
+                                //share nilai tokennya
+                                SharedPreferences mSettings = LoginActivity.this.getSharedPreferences("Login_Data", LoginActivity.this.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putString("Login_Token_Customer", token_login_customer);
+                                editor.apply();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Log.e("Your Array Response", "Data Null");
+                            Toast.makeText(LoginActivity.this, "Data null", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                        Log.e("error is ", "" + error);
+                        Toast.makeText(LoginActivity.this, "The server unreachable", Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+
+            //Pass Your Parameters here
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("role", "user");
+                params.put("username", email);
+                params.put("password", password);
+                return params;
+            }
+
+        };
+
+        //Adding the string request to the queue
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
+
+    }
+
+    private void login_Customer_Google() {
+        //Getting values from edit texts
+        final String email = mAuth.getCurrentUser().getEmail();
+        final String password = "No Password";
+
+        //Creating a string request
+        StringRequest request = new StringRequest(Request.Method.POST, "http://10.0.2.2:5000/api/login",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.equals(null)) {
+                            Log.e("Your Array Response", response);
+
+                            try {
+                                JSONObject responeJsonObject = new JSONObject(response);
+                                token_login_customer = responeJsonObject.getString("Token");
+                                Log.e("Token User",token_login_customer);
+
+                                //share nilai tokennya
+                                SharedPreferences mSettings = LoginActivity.this.getSharedPreferences("Login_Data", LoginActivity.this.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putString("Login_Token_Customer", token_login_customer);
+                                editor.apply();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Log.e("Your Array Response", "Data Null");
+                            Toast.makeText(LoginActivity.this, "Data null", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                        Log.e("error is ", "" + error);
+                        Toast.makeText(LoginActivity.this, "The server unreachable", Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+
+            //Pass Your Parameters here
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("role", "user");
+                params.put("username", email);
+                params.put("password", password);
+                return params;
+            }
+
+        };
+
+        //Adding the string request to the queue
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
+
+    }
+
+    private void check_user_in_database(){
+        //ambil username dan phone number nya dari database
+        DatabaseReference current_user_db = mDatabase.child("Users").child("Customers");
+
+        current_user_db.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot datas: dataSnapshot.getChildren()){
+                    String uid = mAuth.getUid();
+
+                    for(DataSnapshot data: dataSnapshot.getChildren()){
+                        if (data.child(uid).exists()) {
+                            //sudah terdaftar tinggal login
+                        } else {
+                            //belum terdaftar, maka daftarin dulu
+                            DatabaseReference current_user_db = mDatabase.child("Users").child("Customers").child(mAuth.getCurrentUser().getUid());
+                            current_user_db.child("Username").setValue(mAuth.getCurrentUser().getDisplayName());
+                            current_user_db.child("Email").setValue(mAuth.getCurrentUser().getEmail());
+                            current_user_db.child("Password").setValue("No Password");
+                            current_user_db.child("PhoneNumber").setValue("-");
+                            current_user_db.child("Address").setValue("-");
+                            current_user_db.child("SignUp Method").setValue("Google Account");
+
+                            //masukin data ke database localhost
+                            insert_user(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), "No Password", "0", mAuth.getCurrentUser().getDisplayName(), "-" );
+
+                        }
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

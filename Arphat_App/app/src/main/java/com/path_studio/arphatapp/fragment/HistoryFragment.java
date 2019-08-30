@@ -53,7 +53,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //get token login
         mSettings = getActivity().getSharedPreferences("Login_Data", getActivity().MODE_PRIVATE);
-        token = mSettings.getString("Login_Token", "Missing Token");
+        token = mSettings.getString("Login_Token_Customer", "Missing Token");
 
         get_Booking();
 

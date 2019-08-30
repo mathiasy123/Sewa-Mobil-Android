@@ -5,10 +5,196 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PaymentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <!--Bagian Top Gambar, tulisan, dan logo-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/background_payment" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="Payment"
+                android:textStyle="bold"
+                android:textSize="28dp"
+                android:textColor="@color/com_facebook_blue"/>
+
+            <!--Logo arphat-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:layout_marginHorizontal="130dp"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/round_btn_white">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/arphat_logo" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--Box untuk Button Payment, History, dan Reward-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="-80dp"
+            android:padding="20dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shadow_box">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="History"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Pay"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Reward"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+        <!--Bagian Scrollable-->
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:padding="20dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--Bagian Recent Activity-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:text="Recent Activity"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorDarkGrey"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shadow_box"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/not_found_404"/>
+
+                    <!--Make Like HR in HTML-->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@color/tw__composer_light_gray"/>
+
+                    <TextView
+                        android:id="@+id/start_booking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Start Now"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorSkyBlue"
+                        android:textSize="20dp"/>
+
+                </LinearLayout>
+                <!--End of Recent Activity-->
+
+                <!--Bagian Promotion-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:text="Promotion"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorDarkGrey"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/shadow_box"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/inbox"/>
+
+                    <!--Make Like HR in HTML-->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@color/tw__composer_light_gray"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="No Promotion"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorSkyBlue"
+                        android:textSize="20dp"/>
+
+                </LinearLayout>
+                <!--End of Promotion-->
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </FrameLayout>
