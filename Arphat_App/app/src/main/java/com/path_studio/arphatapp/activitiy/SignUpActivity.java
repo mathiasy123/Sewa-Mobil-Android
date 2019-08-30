@@ -66,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ProgressDialog pDialog;
     private SharedPreferences mSettings;
     private String token = "";
+    private String token_login_customer = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +222,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                         //masukan juga di database
                                         insert_user(user_id, email, password, "0", username ,"-");
 
+                                        //login usernya supaya dapet token
+                                        login_Customer_manual(email, password);
                                     }
                                 }
                             });
@@ -301,6 +304,68 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         };
         queue.add(postRequest);
+
+    }
+
+    private void login_Customer_manual(String mEmail, String mPassword) {
+        //Getting values from edit texts
+        final String email = mEmail;
+        final String password = mPassword;
+
+        //Creating a string request
+        StringRequest request = new StringRequest(Request.Method.POST, "http://10.0.2.2:5000/api/login",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.equals(null)) {
+                            Log.e("Your Array Response", response);
+
+                            try {
+                                JSONObject responeJsonObject = new JSONObject(response);
+                                token_login_customer = responeJsonObject.getString("Token");
+                                Log.e("Token User",token_login_customer);
+
+                                //share nilai tokennya
+                                SharedPreferences mSettings = SignUpActivity.this.getSharedPreferences("Login_Data", SignUpActivity.this.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putString("Login_Token_Customer", token_login_customer);
+                                editor.apply();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Log.e("Your Array Response", "Data Null");
+                            Toast.makeText(SignUpActivity.this, "Data null", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                        Log.e("error is ", "" + error);
+                        Toast.makeText(SignUpActivity.this, "The server unreachable", Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+
+            //Pass Your Parameters here
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("role", "user");
+                params.put("username", email);
+                params.put("password", password);
+                return params;
+            }
+
+        };
+
+        //Adding the string request to the queue
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
 
     }
 
